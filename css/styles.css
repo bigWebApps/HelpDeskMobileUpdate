@@ -176,7 +176,7 @@ zoom: 1;
 /*------------ login --------------------*/
 body.login,
 body.login div.content {
-	background-color: #004174;
+	background-color: #ff9900;
 	color: #ffffff;
 	padding: 0;
 	margin: 0;
@@ -208,28 +208,27 @@ body.login div.content {
 .navbar{ 
 	position: relative; 
 	margin-bottom: 20px;
-	/* background-color: #17649a; */
-	background: #276da3;
-	background: -moz-linear-gradient(top, #276da3 0%, #004174 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#276da3), color-stop(100%,#004174));
-	background: -webkit-linear-gradient(top, #276da3 0%,#004174 100%);
-	background: -o-linear-gradient(top, #276da3 0%,#004174 100%);
-	background: -ms-linear-gradient(top, #276da3 0%,#004174 100%);
-	background: linear-gradient(top, #276da3 0%,#004174 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#276da3', endColorstr='#004174',GradientType=0 );
+	background: #ff9900;
+	background: -moz-linear-gradient(top,  #ffb84f 0%, #ff9900 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffb84f), color-stop(100%,#ff9900)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffb84f 0%,#ff9900 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffb84f 0%,#ff9900 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffb84f 0%,#ff9900 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffb84f 0%,#ff9900 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb84f', endColorstr='#ff9900',GradientType=0 ); /* IE6-9 */
 	color: #ffffff;
 	}
 
 .navbar-inner {
 	/* border: none; */
-	border-bottom: 1px solid #004174;
+	border-bottom: 1px solid #E88B00;
 	}
 	.navbar .nav > li > a {
 		text-shadow: none;
 		}
 	.navbar .nav > .active > a, .navbar .nav > .active > a:focus {
 		color: #ffffff;
-		background-color: #007dd1;
+		background-color: #d18000;
 		}
 
 
@@ -240,8 +239,8 @@ body.login div.content {
 	-webkit-tap-highlight-color: rgba(64, 179, 223, 0.2);
 	}
 	.navbar-inner .menu_button {
-		border-left: 1px solid rgb(47, 112, 162);
-		border-right: 1px solid rgb(47, 112, 162);
+		border-left: 1px solid #ff9900;
+		border-right: 1px solid #ff9900;
 		}
 	.menu_button:hover,
 	.menu_button:focus
@@ -249,15 +248,15 @@ body.login div.content {
 		cursor: pointer;
 		}
 .menu_icon {
-	background:#145989 url(../img/head-menu2x.png) center center no-repeat;
+	background:#ff9900 url(../img/head-menu2x.png) center center no-repeat;
 	background-size: 50px 50px;
 	}
 .add_icon {
-	background:#145989 url(../img/head-plus2x.png) center center no-repeat;
+	background:#ff9900 url(../img/head-plus2x.png) center center no-repeat;
 	background-size: 50px 50px;
 	}
 .back_icon {
-	background:#145989 url(../img/head-back2x.png) center center no-repeat;
+	background:#ff9900 url(../img/head-back2x.png) center center no-repeat;
 	background-size: 50px 50px;
 	}
 .info_icon {
@@ -283,9 +282,9 @@ p.header_label {
 	}	
 /*Search bar*/	
 .header_search_tickets {
-	border-top: 1px solid #237696;
-	border-bottom: 1px solid #237696;
-	background-color: #39a0c7;
+	border-top: 1px solid #CC9217;
+	border-bottom: 1px solid #CC9217;
+	background-color: #FFC866;
 	overflow: hidden;
 	padding: 5px;
 	}
@@ -331,7 +330,7 @@ p.header_label {
 
 /* User type selection */
 .header_user_type {
-	background-color: #17649a;
+	background-color: #5f5f5f;
 	color: #ffffff; 
 	width: 100%;
 	}	
@@ -349,7 +348,7 @@ p.header_label {
 			float: right;
 			}
 		.header_user_type ul li.active {
-			background-color: #40b3df;			
+			background-color: #333333;			
 			cursor: pointer;
 			}
 		.header_user_type ul li:hover {			
@@ -361,7 +360,7 @@ p.header_label {
 			height: 0px;
 			border-style: solid;
 			border-width: 8px 8px 0 8px;
-			border-color: #40b3df transparent transparent transparent;
+			border-color: #333333 transparent transparent transparent;
 			position: absolute;
 			z-index: 2;
 			top: 35px;
@@ -443,7 +442,7 @@ p.header_label {
 	margin: 10px auto;
 	text-align: center;
 	padding: 10px;
-	background-color: #17649a;
+	background-color: #5f5f5f;
 	}
 	.noTickets h2 {
 		font-size: 24px;
@@ -502,7 +501,7 @@ p.header_label {
 	font-size: 22px;
 	line-height: 32px;
 	color: #ffffff;
-	background-color: #145989;
+	background-color: #ff9900;
 	padding: 10px;
 	margin: 0;
 	width: 60px;
@@ -539,7 +538,7 @@ p.header_label {
 	width: 60px;
 	height: 75px;
 	text-align: center;
-	background-color: #17649a;
+	background-color: #ff9900;
 	overflow: hidden;
 	}
 	.ticket .gravatar img {
@@ -592,7 +591,7 @@ p.header_label {
 			width: 35px;
 			height: 85px;
 			text-align: center;
-			background: url(../img/tkt-action-open2x.png) 0 0 no-repeat #17649a;
+			background: url(../img/tkt-action-open2x.png) 0 0 no-repeat #ff9900;
 			background-size: 35px 85px;
 			margin: 0;
 			position: absolute;
@@ -617,7 +616,7 @@ p.header_label {
 		}
 	.tkt_actions .tkt_actions_menu {
 		overflow: hidden;
-		background-color: #3b3b3d;
+		background-color: #5f5f5f;
 		color: #ffffff;
 		font-size: 10px;
 		}
@@ -633,7 +632,7 @@ p.header_label {
 			height: 0px;
 			border-style: solid;
 			border-width: 0 8px 10px 8px;
-			border-color: transparent transparent #3b3b3d transparent;
+			border-color: transparent transparent #5f5f5f transparent;
 			position: absolute;
 			margin: -7px 26px;
 			z-index: 2;
@@ -653,11 +652,11 @@ p.header_label {
 			padding: 0;
 			background-position: 0 0;
 			background-repeat: no-repeat;
-			background-color: #145989;
+			background-color: #5f5f5f;
 			}
 			.tkt_actions .tkt_actions_menu ul li.active,
 			.tkt_actions .tkt_actions_menu ul li:hover {
-				background-color: #40b3df;
+				background-color: #333333;
 				}			
 			.tkt_actions .tkt_actions_menu ul li.responses {
 				background-image:url(../img/response-icon2x.png);
@@ -669,7 +668,7 @@ p.header_label {
 				}				
 	.tkt_actions .tkt_add_response,
 	.tkt_actions .tkt_add_time{
-		background-color: #40b3df;
+		background-color: #333333;
 		padding: 10px;
 		
 		}
@@ -856,8 +855,10 @@ p.header_label {
     -webkit-box-sizing: border-box;
 	}
 .content.ticket_detail div.ticket_info {
+	color: #fff;
+	background-color: #999;
 	padding: 10px;
-	border-bottom: 1px solid #cccccc;
+	border-bottom: 1px solid #777777;
 	}
 	.content.ticket_detail div.ticket_info p {
 		margin: 0 0;
