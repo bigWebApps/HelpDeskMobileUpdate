@@ -6,7 +6,7 @@ var SherpaDesk = {
 			org: localStorage.sd_org_key,
 			inst: localStorage.sd_inst_key,
 			role: localStorage.sd_user_role,
-			url: 'http://api.sherpadesk.com/'
+			url: 'http://api.bigwebapps.com/'
 			}; 
 		
 		$(document).ajaxStart(function() { $( "body" ).addClass('spinner');	 }).ajaxComplete(function() { $( "body" ).removeClass('spinner'); });
