@@ -2,10 +2,10 @@ var SherpaDesk = {
 	init: function(){
 		//cache config	
 		var configPass = {			
-			apiKey: localStorage.sd_api_key,
-			org: localStorage.sd_org_key,
-			inst: localStorage.sd_inst_key,
-			role: localStorage.sd_user_role,
+			apiKey: localStorage.hd_api_key,
+			org: localStorage.hd_org_key,
+			inst: localStorage.hd_inst_key,
+			role: localStorage.hd_user_role,
 			url: 'http://api.bigwebapps.com/'
 			}; 
 		
@@ -52,8 +52,8 @@ var SherpaDesk = {
 			SherpaDesk.getSherpaDesk(configPass, 'config')
 				.then(
 					function(results){
-						localStorage.setItem('sd_currentUser_id', results.user.user_id);
-						localStorage.setItem('sd_tech_admin', results.user.is_techoradmin);				
+						localStorage.setItem('hd_currentUser_id', results.user.user_id);
+						localStorage.setItem('hd_tech_admin', results.user.is_techoradmin);				
 					},
 					function(results){
 		  				addAlert("error", "There was a problem retrieving config options.");
@@ -61,14 +61,14 @@ var SherpaDesk = {
 				).done(
 					function(results){
 						
-						if (localStorage.sd_from_queueid > 0 ){							
-							  	console.log(localStorage.sd_from_queueid);
+						if (localStorage.hd_from_queueid > 0 ){							
+							  	console.log(localStorage.hd_from_queueid);
 								SherpaDesk.showTicketHeader();
 								changeRoles(configPass);	
 								ticket_list_menu(".side-menu", "left");
 								add_ticket_button(configPass);
 								ticketListMenuActions(configPass);
-							  	SherpaDesk.getQueueList(configPass, localStorage.sd_from_queueid); 
+							  	SherpaDesk.getQueueList(configPass, localStorage.hd_from_queueid); 
 							} else {
 								SherpaDesk.getTickets(configPass);	
 							}	
@@ -86,8 +86,8 @@ var SherpaDesk = {
 		login.then(
 			//success
 			function(results){
-				localStorage.setItem('sd_api_key', results.api_token);	
-				localStorage.setItem('sd_user_email', config.user);	
+				localStorage.setItem('hd_api_key', results.api_token);	
+				localStorage.setItem('hd_user_email', config.user);	
 				config.pass = '';
 				config.apiKey = results.api_token;
 				SherpaDesk.getOrgInst(config);
@@ -122,11 +122,11 @@ var SherpaDesk = {
 		orgSetup.then(function(results){
 					
 				//initialize user state
-				localStorage.setItem('sd_user_role', 'user');
+				localStorage.setItem('hd_user_role', 'user');
 								
 				// If there are more than one org
 				if (results.length > 1) {
-					localStorage.setItem('sd_is_MultipleOrgInst', 'true');
+					localStorage.setItem('hd_is_MultipleOrgInst', 'true');
 					var orglistitem = results;
 					SherpaDesk.showOrg(orglistitem);							
 					$('select#orgs')					
@@ -135,12 +135,12 @@ var SherpaDesk = {
 							var index_number = this.value;
 							var orgkey = results[index_number].key;
 							var instances = results[index_number].instances;
-							localStorage.setItem('sd_org_key', orgkey);	
+							localStorage.setItem('hd_org_key', orgkey);	
 							
 							// If there is only one instance on the selected org								
 							if (instances.length == 1){
 									instkey = instances[0].key;
-									localStorage.setItem('sd_inst_key', instkey);
+									localStorage.setItem('hd_inst_key', instkey);
 									$("body").empty().addClass('spinner');
 									SherpaDesk.init();
 									//location.reload(true);
@@ -148,27 +148,28 @@ var SherpaDesk = {
 							else {
 							// If there is MORE than one instance on the selected org
 									SherpaDesk.showInst(instances);
+									// listen for Instance selection	
+				  					$('select#inst').change(function(){
+										var instkey = instances[this.value].key;
+				  						localStorage.setItem('hd_inst_key', instkey);
+				  						localStorage.setItem('hd_is_MultipleOrgInst', 'true');
+				  						$("body").empty().addClass('spinner');
+				  						SherpaDesk.init();
+				  						//location.reload(true);
+				  						});
 								};
 						});
 								
-					// listen for Instance selection	
-					$('select#inst').change(function(){
-						var index_number = this.value;
-						localStorage.setItem('sd_inst_key', index_number);
-						localStorage.setItem('sd_is_MultipleOrgInst', 'true');
-						$("body").empty().addClass('spinner');
-						SherpaDesk.init();
-						//location.reload(true);
-						});
+					
 					};// End > 1 
 					
 				// If there is ONLY ONE org and instance
 				if (results.length == 1){
 					var myorg = results[0].key;
 					var myinst = results[0].instances[0].key;
-					localStorage.setItem('sd_org_key', myorg);
-					localStorage.setItem('sd_inst_key', myinst);
-					localStorage.setItem('sd_is_MultipleOrgInst', 'false');
+					localStorage.setItem('hd_org_key', myorg);
+					localStorage.setItem('hd_inst_key', myinst);
+					localStorage.setItem('hd_is_MultipleOrgInst', 'false');
 					$("body").empty().addClass('spinner');
 					SherpaDesk.init();
 					//location.reload(true);					
@@ -233,7 +234,7 @@ var SherpaDesk = {
 	
 	getTickets: function(configPass){	
 		// Get Tickets
-		var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'tickets?status=open&limit=500&role=' + localStorage.sd_user_role);
+		var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'tickets?status=open&limit=500&role=' + localStorage.hd_user_role);
 		//sucess
 		getTicketList.then(
 			function(results){
@@ -267,10 +268,10 @@ var SherpaDesk = {
 				if(configPass.role == "user" || configPass.role == "all"){
 					$('li.time').hide();
 					};
-				if( localStorage.sd_tech_admin === "false" ){
+				if( localStorage.hd_tech_admin === "false" ){
 					$('li.open_tickets, li[data-asrole="tech"], li[data-asrole="alt_tech"]').hide();
 					};
-				if( localStorage.sd_is_MultipleOrgInst === "false" ){
+				if( localStorage.hd_is_MultipleOrgInst === "false" ){
 					$('li p#orgInst').parent().hide();
 					};						
 				}
@@ -333,7 +334,7 @@ var SherpaDesk = {
 				addTime(configPass);
 				getGravatar("p.cir_gravatar", 40);
 				
-				localStorage.setItem('sd_from_queueid', id);	
+				localStorage.setItem('hd_from_queueid', id);	
 				
 				if ( ($("ul.tickets li.ticket").size()) > 0){
 						filterList();
@@ -462,7 +463,7 @@ var SherpaDesk = {
 		
 	postTicketDetailPickup: function(configPass, key){
 			$('body').empty().addClass('spinner');
-			var tech = localStorage.sd_currentUser_id;
+			var tech = localStorage.hd_currentUser_id;
 			var data = {
 			    "action" : "pickup"
 			},
@@ -529,7 +530,7 @@ var SherpaDesk = {
 				//success
 				function(){
 					SherpaDesk.getTicketDetail(configPass, key);
-					addAlert("success", "Whew! That monkey is off your back!");
+					addAlert("success", "Awesome! This ticket is now closed.");
 					},
 				//error
 				function(){
@@ -571,7 +572,7 @@ var SherpaDesk = {
 			//success
 			function(results){
 				SherpaDesk.getTicketDetail(configPass, key);
-				addAlert("success", "See, now we're communicating.");
+				addAlert("success", "Success! Your response has been logged.");
 			},
 			//failed
 			function(results){
@@ -671,7 +672,7 @@ var SherpaDesk = {
 		var classes = SherpaDesk.getSherpaDesk(configPass, 'classes');
 		var accounts = SherpaDesk.getSherpaDesk(configPass, 'accounts');
 		var techs = SherpaDesk.getSherpaDesk(configPass, 'technicians');
-		var user = SherpaDesk.getSherpaDesk(configPass, 'users?email=' + localStorage.sd_user_email);
+		var user = SherpaDesk.getSherpaDesk(configPass, 'users?email=' + localStorage.hd_user_email);
 		
 		SherpaDesk.showAddTicket();		
 		
@@ -758,8 +759,8 @@ var SherpaDesk = {
 		$('body').empty().addClass('login');
 		var template = Handlebars.templates['login']; 							
 		$('body').append( template() ).show();
-	  		if (localStorage['sd_user_email']){
-	  			$('input#email').val(localStorage['sd_user_email']);
+	  		if (localStorage['hd_user_email']){
+	  			$('input#email').val(localStorage['hd_user_email']);
 			};
 		},
 	showOrg: function(orgs){
@@ -874,7 +875,7 @@ function checkLogin(configPass){
 // Set the current Role in header filter
 function setCurrentRole(){
 	$("ul.filter li").each(function(){
-			if( $(this).data("asrole") == localStorage.sd_user_role){
+			if( $(this).data("asrole") == localStorage.hd_user_role){
 				$(this).addClass("active");
 			};
 		});
@@ -887,8 +888,8 @@ function changeRoles(configPass){
 		$(this).addClass("active");
 		$('div.content').empty().addClass('spinner');	
 		var asRole = $(this).data('asrole');
-		localStorage.setItem('sd_user_role', asRole);
-		localStorage.removeItem('sd_from_queueid');			
+		localStorage.setItem('hd_user_role', asRole);
+		localStorage.removeItem('hd_from_queueid');			
 		SherpaDesk.init();
 		//SherpaDesk.getTickets(configPass);
 		});
@@ -1185,8 +1186,8 @@ function ticket_menu_rev(results){
 	  	if (results.status === "Closed"){$('li p#close, li p#time, li p#transfer').parent().hide();}
 		
 		//check to pickup
-		var tech_type = localStorage.sd_tech_admin;	
-		var tech_id = localStorage.sd_currentUser_id;		
+		var tech_type = localStorage.hd_tech_admin;	
+		var tech_id = localStorage.hd_currentUser_id;		
 		var tech = $.grep(results.technicians, function(a){ return a.user_id == tech_id; });
 		if(tech.length > 0 || tech_type == "false"){$('li p#pickup').parent().hide()};
 		
@@ -1242,19 +1243,19 @@ function addAlert(type, message) {
 // Logout
 function logOut(){
 	$('body').empty().addClass('login');
-	localStorage.removeItem('sd_api_key');
-	localStorage.removeItem('sd_inst_key');
-	localStorage.removeItem('sd_org_key');
-	localStorage.removeItem('sd_from_queueid');	
+	localStorage.removeItem('hd_api_key');
+	localStorage.removeItem('hd_inst_key');
+	localStorage.removeItem('hd_org_key');
+	localStorage.removeItem('hd_from_queueid');	
 	location.reload(true);
 	};
 
 // Change Orgs / Inst
 function changeOrgs(){
 	$('body').empty().addClass('login');
-	localStorage.removeItem('sd_inst_key');
-	localStorage.removeItem('sd_org_key');
-	localStorage.removeItem('sd_from_queueid');	
+	localStorage.removeItem('hd_inst_key');
+	localStorage.removeItem('hd_org_key');
+	localStorage.removeItem('hd_from_queueid');	
 	SherpaDesk.init();
 	};
 	
@@ -1262,15 +1263,4 @@ function changeOrgs(){
 
 Handlebars.registerHelper('linebreaks', function(context) {
     return context.replace(/\n/g, "<br />");
-});
-
-// Analytics
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	    })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
-	  
-	    ga('create', 'UA-998328-15', 'sherpadesk.com');
-	    ga('send', 'pageview');
-
-	
+});	
