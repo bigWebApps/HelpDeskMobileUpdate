@@ -1,8 +1,8 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['accounts'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -29,16 +29,76 @@ function program1(depth0,data) {
   else { return ''; }
   });
 templates['addTicket'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<a name=\"top\"/>\r\n<div class=\"navbar navbar-static-top\">\r\n	<div class=\"navbar-inner\">\r\n		<a class=\"menu_button header_left back_icon\" id=\"ticketList\"></a>\r\n		<p class=\"header_label\">Create New Ticket</p>\r\n	</div>  \r\n</div>\r\n\r\n<div class=\"content ticket_add\" style=\"display:none;\"> \r\n	<form class=\"create_ticket\">\r\n		<div class=\"showalert\"></div>	\r\n			\r\n		<label>Account</label>\r\n		<select name=\"account\" id=\"account\">\r\n			<option value=\"\">---</option>\r\n		</select>\r\n		<label>Technician</label>\r\n		<select name=\"tech\" id=\"tech\">\r\n			<option value=\"\">---</option>\r\n		</select>\r\n		<label>Class</label>\r\n		<select name=\"class\" id=\"class\">\r\n			<option value=\"\">---</option>			\r\n		</select>\r\n		\r\n		<label>Subject</label>\r\n		<input name=\"subject\" id=\"subject\" type=\"text\">\r\n		\r\n		<label>Details</label>\r\n		<textarea name=\"details\" id=\"details\" wrap=\"soft\" cols=\"50\" rows=\"10\" ></textarea>\r\n		\r\n		<button class=\"btn btn-large btn-block btn-success\" type=\"submit\">Create Ticket</button>\r\n	  \r\n	</form>  \r\n</div>";
+  return "<a name=\"top\"/>\r\n<div class=\"navbar navbar-static-top\">\r\n	<div class=\"navbar-inner\">\r\n		<a class=\"menu_button header_left back_icon\" id=\"ticketList\"></a>\r\n		<p class=\"header_label\">Create New Ticket</p>\r\n	</div>  \r\n</div>\r\n\r\n<div class=\"content ticket_add\" style=\"display:none;\"> \r\n	<form class=\"create_ticket\">\r\n		<div class=\"showalert\"></div>	\r\n			\r\n		<label>Account</label>\r\n		<select name=\"account\" id=\"account\">\r\n			<option value=\"\">---</option>\r\n		</select>\r\n		<label>Technician</label>\r\n		<select name=\"tech\" id=\"tech\">\r\n			<option value=\"\">---</option>\r\n		</select>\r\n		<div class=\"add_class\">\r\n			<div class=\"main_class\">\r\n				<label>Class</label>\r\n				<select name=\"class\" id=\"class\">\r\n					<option value=\"\">---</option>			\r\n				</select>\r\n			</div>\r\n		</div>\r\n		\r\n		<label>Subject</label>\r\n		<input name=\"subject\" id=\"subject\" type=\"text\">\r\n		\r\n		<label>Details</label>\r\n		<textarea name=\"details\" id=\"details\" wrap=\"soft\" cols=\"50\" rows=\"10\" ></textarea>\r\n		\r\n		<button class=\"btn btn-large btn-block btn-success\" type=\"submit\">Create Ticket</button>\r\n	  \r\n	</form>  \r\n</div>";
+  });
+templates['addTicket_subClass1'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\r\n			<option data-classId=\"";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" value=\"";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</option>\r\n		";
+  return buffer;
+  }
+
+  buffer += "\r\n<div class=\"sub_class1\">\r\n	<label>>> Sub Class</label>\r\n	<select name=\"sub_class1\" id=\"sub_class1\">\r\n		<option value=\"\">---</option>\r\n		";
+  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "			\r\n	</select>\r\n</div>";
+  return buffer;
+  });
+templates['addTicket_subClass2'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\r\n			<option data-classId=\"";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" value=\"";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</option>\r\n		";
+  return buffer;
+  }
+
+  buffer += "\r\n<div class=\"sub_class2\">\r\n	<label>>> >> Sub Sub Class</label>\r\n	<select name=\"sub_class2\" id=\"sub_class2\">\r\n		<option value=\"\">---</option>\r\n		";
+  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "			\r\n	</select>\r\n</div>";
+  return buffer;
   });
 templates['alert'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
@@ -54,8 +114,8 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   return buffer;
   });
 templates['classes'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -82,16 +142,16 @@ function program1(depth0,data) {
   else { return ''; }
   });
 templates['closeTicket'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
   return "<a name=\"top\"/>\r\n<div class=\"closeTicket\"> \r\n	<form class=\"close_ticket\" action=\"#\">\r\n		<div class=\"showalert\"></div>	\r\n		\r\n		<label>\r\n	      <input type=\"checkbox\" id=\"closeNotice\" name=\"closeNotice\"> Notify user via email\r\n	    </label>		\r\n		\r\n		<label>Add Note</label>\r\n		<textarea name=\"details\" id=\"details\" wrap=\"soft\" cols=\"50\" rows=\"10\" ></textarea>\r\n		\r\n		<button class=\"btn btn-large btn-block btn-warning\" type=\"submit\">Close This Ticket</button>\r\n	  \r\n	</form>  \r\n</div>";
   });
 templates['inst'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -102,7 +162,7 @@ function program1(depth0,data) {
   else { stack1 = depth0.key; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "\" value=\""
-    + escapeExpression(((stack1 = data.index),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">";
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
@@ -111,23 +171,23 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div class=\"content\">\r\n	<div class=\"login-container\">    \r\n		<form class=\"form-signin\">\r\n			<div class=\"logo\"><img src=\"img/Sherpa_Desk-logo.png\"></div>\r\n			<div class=\"showalert\"></div>\r\n			<h2>Select Your Instance</h2>			\r\n			<select name=\"inst\" id=\"inst\">\r\n			";
+  buffer += "<div class=\"content\">\r\n	<div class=\"login-container\">    \r\n		<form class=\"form-signin\">\r\n			<div class=\"logo\"><img src=\"img/Sherpa_Desk-logo.png\"></div>\r\n			<div class=\"showalert\"></div>\r\n			<h2>Select Your Instance</h2>			\r\n			<select name=\"inst\" id=\"inst\">\r\n				<option value=\"\" selected=\"selected\">Choose an Instance</option>\r\n			";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\r\n			</select>\r\n		</form>		\r\n	</div>\r\n</div>";
   return buffer;
   });
 templates['login'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
   return "<div class=\"content\">\r\n	<div class=\"login-container\">    \r\n		<form class=\"form-signin\">\r\n			<div class=\"logo\"><img src=\"img/Sherpa_Desk-logo.png\"></div>\r\n			<div class=\"showalert\"></div>			\r\n			<input type=\"email\" id=\"email\" class=\"input-block-level\" placeholder=\"Email Address\">\r\n			<input type=\"password\" id=\"password\" class=\"input-block-level\" placeholder=\"Password\">			\r\n			<button class=\"btn btn-large btn-block btn-success\" type=\"submit\">Sign in</button>\r\n		</form>		\r\n	</div>\r\n	<!-- Sign up Form\r\n	<div class=\"login_signup\">\r\n    	<img class=\"signup_img\" src=\"img/jangbu-signup.png\">\r\n        \r\n        <div class=\"signup_content\">\r\n        	<p>New to SherpaDesk?</p>\r\n            <a class=\"signup_button\">Get a New Account</a>\r\n        </div>\r\n    </div>\r\n	-->\r\n</div>";
   });
 templates['orgs'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -138,7 +198,7 @@ function program1(depth0,data) {
   else { stack1 = depth0.key; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "\" value=\""
-    + escapeExpression(((stack1 = data.index),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">";
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
@@ -154,8 +214,8 @@ function program1(depth0,data) {
   return buffer;
   });
 templates['techs'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -186,16 +246,16 @@ function program1(depth0,data) {
   else { return ''; }
   });
 templates['ticket_header'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
   return "<div class=\"side-menu\" style=\"display:none;\">\r\n	<ul>\r\n		<li class=\"searchform\">\r\n			<input type=\"text\" placeholder=\"Jump to Ticket #\" class=\"ticket-jump-menu\">\r\n		</li>\r\n		<li><p id=\"queues\"><i class=\"icon-folder-open icon-white\"></i> Queues</p></li>\r\n		<li><p id=\"orgInst\"><i class=\"icon-list-alt icon-white\"></i> Change Org/Inst</p></li>\r\n		<li><p id=\"logout\"><i class=\"icon-off icon-white\"></i> Log out</p></li>\r\n		<li><a href=\"http://app.bigwebapps.com\"><p id=\"fullSite\"><i class=\"icon-share-alt icon-white\"></i> Switch to Full App</p></a></li>\r\n	</ul>    \r\n</div>\r\n<header>\r\n	<div class=\"navbar\">\r\n		<div class=\"navbar-inner\">\r\n			<a href=\"#\" id=\"left-button\" class=\"menu_button header_left menu_icon ticket_list_menu\"></a>\r\n			<a href=\"#\" id=\"right-button\" class=\"menu_button header_right add_icon add_ticket_button\"></a>\r\n			<p class=\"header_label\">Tickets</p>                \r\n		</div> \r\n		<div class=\"header_search_tickets\">\r\n			<input type=\"text\" class=\"search\" placeholder=\"Search Tickets\">\r\n		</div> \r\n		<div class=\"header_user_type\">\r\n			<ul class=\"filter\">\r\n				<li data-asrole=\"user\">As User</li>\r\n                <li data-asrole=\"tech\">As Tech</li>\r\n                <li data-asrole=\"alt_tech\">As Alt Tech</li>\r\n				<li class=\"open_tickets\" data-asrole=\"all\">All Open</li>\r\n			</ul>\r\n		</div>          \r\n	</div>\r\n</header>";
   });
 templates['ticket_list'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -284,8 +344,8 @@ function program4(depth0,data) {
   else { return ''; }
   });
 templates['ticket_response'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data) {
@@ -313,7 +373,7 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1)
     + "</p>\r\n		<p>";
   options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.linebreaks),stack1 ? stack1.call(depth0, depth0.note, options) : helperMissing.call(depth0, "linebreaks", depth0.note, options));
+  stack2 = ((stack1 = helpers.linebreaks || depth0.linebreaks),stack1 ? stack1.call(depth0, depth0.note, options) : helperMissing.call(depth0, "linebreaks", depth0.note, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "</p>			\r\n	</div>\r\n</li>\r\n<!-- Single Response END -->\r\n";
   return buffer;
@@ -324,8 +384,8 @@ function program1(depth0,data) {
   else { return ''; }
   });
 templates['ticketDetail_content'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
@@ -351,7 +411,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   buffer += escapeExpression(stack1)
     + "\r\n		        </div>\r\n	            <div class=\"tkt_ini_response\">\r\n	            	";
   options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.linebreaks),stack1 ? stack1.call(depth0, depth0.initial_post, options) : helperMissing.call(depth0, "linebreaks", depth0.initial_post, options));
+  stack2 = ((stack1 = helpers.linebreaks || depth0.linebreaks),stack1 ? stack1.call(depth0, depth0.initial_post, options) : helperMissing.call(depth0, "linebreaks", depth0.initial_post, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\r\n	            </div>\r\n	        </div>\r\n	        \r\n	        <div class=\"tkt_actions\" data-reskey=\"";
   if (stack2 = helpers.key) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
@@ -377,8 +437,8 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   return buffer;
   });
 templates['ticketDetail_header'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -414,8 +474,8 @@ function program1(depth0,data) {
   return buffer;
   });
 templates['ticketDetail_info'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -593,16 +653,16 @@ function program22(depth0,data) {
   return buffer;
   });
 templates['transfer'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
   return "<a name=\"top\"/>\r\n<div class=\"transfer\"> \r\n	<form class=\"transfer_ticket\" action=\"#\">\r\n		<div class=\"showalert\"></div>	\r\n		\r\n		<label>Technician</label>\r\n		<select name=\"tech\" id=\"tech\">\r\n			<option value=\"\">---</option>			\r\n		</select>		\r\n		\r\n		<label>Add Note</label>\r\n		<textarea name=\"details\" id=\"details\" wrap=\"soft\" cols=\"50\" rows=\"10\" ></textarea>\r\n		\r\n		<button class=\"btn btn-large btn-block btn-success\" type=\"submit\">Transfer Ticket</button>\r\n	  \r\n	</form>  \r\n</div>";
   });
 templates['queue_list'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -644,24 +704,24 @@ function program4(depth0,data) {
   else { return ''; }
   });
 templates['ticketDet_response'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
   return "<a name=\"top\"/>\r\n<div class=\"content response_add\"> \r\n	<form class=\"create_response\">\r\n		<div class=\"showalert\"></div>	\r\n		\r\n		<textarea name=\"details\" id=\"details\" wrap=\"soft\" cols=\"50\" rows=\"10\" ></textarea>\r\n		\r\n		<button class=\"btn btn-large btn-block btn-success\" type=\"submit\">Add Response</button>\r\n	  \r\n	</form>  \r\n</div>";
   });
 templates['ticketDet_AddTime'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
   return "<a name=\"top\"/>\r\n<div class=\"content time_add\"> \r\n	<form class=\"add_time\">\r\n		<div class=\"showalert\"></div>\r\n		\r\n		<div class=\"tkt_add_time\">\r\n			<div class=\"tkt_add_time_input\">\r\n				<button class=\"minus_time\">-</button>\r\n				<button class=\"plus_time\">+</button>\r\n				<p>\r\n					<input type=\"number\" class=\"add_time\" name=\"add_time\" value=\"0\" step=\".25\" />\r\n				</p>                                    \r\n			</div>								\r\n		</div>		\r\n		\r\n		<label>Select Task Type</label>\r\n		<select name=\"task_type\" id=\"task_type\">\r\n			<option value=\"\">---</option>\r\n		</select>		\r\n		\r\n		<label>Notes</label>\r\n		<textarea name=\"details\" id=\"details\" wrap=\"soft\" cols=\"50\" rows=\"10\" ></textarea>\r\n		\r\n		<button class=\"btn btn-large btn-block btn-success\" type=\"submit\">Add Time</button>\r\n	  \r\n	</form>  \r\n</div>";
   });
 templates['taskTypes'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
