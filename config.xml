@@ -2,7 +2,7 @@
     <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.bigwebapps.helpdesk"
-        version   = "1.5.0">
+        version   = "2.0.0">
 
 	    <access origin="*" />
 	
@@ -32,8 +32,9 @@
 		<icon src="img/icons/ios/icon_at_2x.png" gap:platform="ios" width="114" height="114" />
 		
 		<!-- IOS only splash screens -->
-		<gap:splash src="img/splash/ios/Default.png" width="320" height="480" />
-		<gap:splash src="img/splash/ios/Default_at_2x.png" width="640" height="960" />
+		<gap:splash src="img/splash/ios/Default.png" gap:platform="ios" width="320" height="480" />
+		<gap:splash src="img/splash/ios/Default_at_2x.png" gap:platform="ios" width="640" height="960" />
+                <gap:splash src="img/splash/ios/Default_iphone5.png" gap:platform="ios" width="640" height="1136" />
 		
 		
 		<!-- Enable phonegap features -->

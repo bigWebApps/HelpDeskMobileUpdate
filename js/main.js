@@ -1,3 +1,5 @@
+$.fx.off = true;
+
 var SherpaDesk = {
 	init: function(){
 		//cache config	
@@ -22,7 +24,7 @@ var SherpaDesk = {
 				//$("body").empty().removeClass("login").addClass('spinner');
 				$("body").removeClass("login");
 				SherpaDesk.getConfig(configPass);				
-			};			
+			};       			
 		}, //End init
 		
 	//Global AJAX request
