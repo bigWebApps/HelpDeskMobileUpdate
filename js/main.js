@@ -1006,12 +1006,18 @@ function ticketActions(configPass){
 		
 		$("div.see_more").on('click',function(e){
 			e.preventDefault();
-			$(".tkt_actions").slideUp("slow"); // Hide other Comments  			
-			if ($(this).next(".tkt_actions").is(":hidden")){
+			var isHidden = $(this).next(".tkt_actions").is(":hidden");//cache div state
+			$(".tkt_actions").slideUp("slow"); // Hide other Comments 			
+			if (isHidden){
+					//if hidden the show	
 					var ticketKey = $(this).data('key');										
-					$(this).next(".tkt_actions").slideToggle("slow");	
-					SherpaDesk.getComments(configPass, ticketKey);	
-				};			
+					$(this).next(".tkt_actions").slideDown("slow");					
+					SherpaDesk.getComments(configPass, ticketKey);						
+				} else {
+					//if showing then hide
+					$(this).next(".tkt_actions").slideUp("slow");	
+				};
+			  			
 			});
 		
 		$("div.tkt_actions_menu ul li").on('click',function(e){
