@@ -69,7 +69,11 @@ var SherpaDesk = {
 						
 						if (localStorage.hd_from_queueid > 0 ){							
 							  	console.log(localStorage.hd_from_queueid);
-								SherpaDesk.showTicketHeader();
+                var organization = {
+			    "organization" : localStorage.hd_org_key,
+			    "instance" : localStorage.hd_inst_key
+			  };
+								SherpaDesk.showTicketHeader(organization);
 								changeRoles(configPass);	
 								ticket_list_menu(".side-menu", "left");
 								add_ticket_button(configPass);
@@ -262,7 +266,11 @@ var SherpaDesk = {
 		//sucess
 		getTicketList.then(
 			function(results){
-				SherpaDesk.showTicketHeader();
+      	var organization = {
+			    "organization" : localStorage.hd_org_key,
+			    "instance" : localStorage.hd_inst_key
+			  };
+				SherpaDesk.showTicketHeader(organization);
 				SherpaDesk.showTicketList(results);
 			},
 			//failed
@@ -870,10 +878,10 @@ var SherpaDesk = {
 		var template = Handlebars.templates['taskTypes']; 							
 		$('form select#task_type').append( template(tasktypes) );
 		},
-	showTicketHeader: function(){
+	showTicketHeader: function(organization){
 		$('body').empty();
 		var template = Handlebars.templates['ticket_header']; 							
-		$('body').prepend( template() );		
+		$('body').prepend( template(organization) );		
 		},
 	showTicketList: function(list){
 		var template = Handlebars.templates['ticket_list'];									
