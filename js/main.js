@@ -1207,7 +1207,7 @@ function getCommentImages(attachments){
 	$.each(attachments, function(key, value){
 		var file = value.name,
 			url = value.url,
-			imageInsert = "<a class=\"comment_image_link\" target=\"_blank\" href=\"" + url + "\"><img class=\"comment_image\" src=\"" + url + "&Width=" + ($(".comment_main").width()-10) + "\" alt=\"" + file + "\"></a>",
+			imageInsert = "<a class=\"comment_image_link\" target=\"_blank\" href=\"" + url + "\"><img class=\"comment_image\" src=\"" + url + "&Width=" + ($(".tkt_top").width()+10) + "\" alt=\"" + file + "\"></a>",
 			ext = file.substr( (file.lastIndexOf('.') +1) ).toLowerCase();
 		if(ext === "jpg" || ext === "png" || ext === "gif" ){
 			$('div.tkt_ini_response:contains(' + file + '), div.comment_main:contains(' + file + ')').append(imageInsert);
