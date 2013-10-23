@@ -19,6 +19,8 @@
 	    <author href="http://helpdesk.bigwebapps.com" email="support@bigwebapps.com">
 	        bigWebApps
 	    </author>
+      
+      <content src="http://m.bigwebapps.com/index.html" />
 		
 		<preference name="phonegap-version" value="2.9.0" />
 		<preference name="orientation" value="portrait" />

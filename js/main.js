@@ -1201,7 +1201,13 @@ function ticketListMenuActions(configPass, key){
 	$('#jPanelMenu-menu li p#response').on('click', function(){ SherpaDesk.getTicketDetailResponse(configPass, key) });	
 	$('#jPanelMenu-menu li p#time').on('click', function(){ SherpaDesk.getTicketDetailAddTime(configPass, key) });		
 	};
-	
+
+//open links in InAppBrowser	
+function openURL(urlString){
+    myURL = encodeURI(urlString);
+    window.open(myURL, '_blank');
+}
+  
 //insert images in comments
 function getCommentImages(attachments){	
 	$.each(attachments, function(key, value){
