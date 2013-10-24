@@ -890,7 +890,7 @@ var SherpaDesk = {
     var full_app_link = "",
         urlString = SiteRoot + "?dept=" + localStorage.hd_inst_key + "&org=" + localStorage.hd_org_key;
     if (isPhonegap)
-       full_app_link = "href=#  onclick='openURLsystem(\"" + urlString + "\")'";
+       full_app_link = "href=#  onclick=openURLsystem('" + urlString + "')";
     else
       full_app_link = "href=" + urlString + " target=_system";
     var organization = {"full_app_link" : full_app_link};
