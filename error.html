@@ -6,12 +6,13 @@
   <title>Error</title>
   	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+<script src="js/phonegap.js"></script> 
                   <script type="text/javascript">
                     function check_connection() {
                         if (navigator.onLine)
-                           window.location.href="index.html";
+                           window.open("http://m.bigwebapps.com/index.html", "_self");
                         else
-                           alert("Not yet!")   
+                           alert("Not yet!");   
                     }
                 </script>
   </head>
