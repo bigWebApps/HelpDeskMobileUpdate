@@ -4,6 +4,18 @@
 //Disable all animation on iPhone less iPhone5
 $.fx.off = /iPhone/i.test(navigator.userAgent) && !(window.screen.height == (1136 / 2));
 
+var isPhonegap = false;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+       isPhonegap = true;
+       alert(navigator.onLine ? 'online' : 'offline');
+    };
+    
+var SiteRoot = 'http://app.bigwebapps.com/';
+var ApiRoot = 'http://api.bigwebapps.com/';
+
 var SherpaDesk = {
 	init: function(){
 		//cache config	
@@ -12,7 +24,7 @@ var SherpaDesk = {
 			org: localStorage.hd_org_key,
 			inst: localStorage.hd_inst_key,
 			role: localStorage.hd_user_role,
-			url: 'http://api.bigwebapps.com/'
+			url: ApiRoot
 			}; 
 		
 		$(document).ajaxStart(function() { $( "body" ).addClass('spinner');	 }).ajaxComplete(function() { $( "body" ).removeClass('spinner'); });
@@ -65,15 +77,10 @@ var SherpaDesk = {
 		  				addAlert("error", "There was a problem retrieving config options.");
 		  			}
 				).done(
-					function(results){
-						
+					function(results){				
 						if (localStorage.hd_from_queueid > 0 ){							
 							  	console.log(localStorage.hd_from_queueid);
-                var organization = {
-			    "organization" : localStorage.hd_org_key,
-			    "instance" : localStorage.hd_inst_key
-			  };
-								SherpaDesk.showTicketHeader(organization);
+								SherpaDesk.showTicketHeader();
 								changeRoles(configPass);	
 								ticket_list_menu(".side-menu", "left");
 								add_ticket_button(configPass);
@@ -270,7 +277,7 @@ var SherpaDesk = {
 			    "organization" : localStorage.hd_org_key,
 			    "instance" : localStorage.hd_inst_key
 			  };
-				SherpaDesk.showTicketHeader(organization);
+				SherpaDesk.showTicketHeader();
 				SherpaDesk.showTicketList(results);
 			},
 			//failed
@@ -878,8 +885,15 @@ var SherpaDesk = {
 		var template = Handlebars.templates['taskTypes']; 							
 		$('form select#task_type').append( template(tasktypes) );
 		},
-	showTicketHeader: function(organization){
+	showTicketHeader: function(){
 		$('body').empty();
+    var full_app_link = "",
+        urlString = SiteRoot + "?dept=" + localStorage.hd_inst_key + "&org=" + localStorage.hd_org_key;
+    if (isPhonegap)
+       full_app_link = "href=#  onclick='openURLsystem(\"" + urlString + "\")'";
+    else
+      full_app_link = "href=" + urlString + " target=_system";
+    var organization = {"full_app_link" : full_app_link};
 		var template = Handlebars.templates['ticket_header']; 							
 		$('body').prepend( template(organization) );		
 		},
@@ -1202,19 +1216,29 @@ function ticketListMenuActions(configPass, key){
 	$('#jPanelMenu-menu li p#time').on('click', function(){ SherpaDesk.getTicketDetailAddTime(configPass, key) });		
 	};
 
-//open link	
+//open link	in blank
 function openURL(urlString){
-    myURL = encodeURI(urlString);
-    window.open(myURL, '_blank');
+    window.open(urlString, '_blank', 'location=no, toolbar=no');
 }
-  
+
+//open link	in system
+function openURLsystem(urlString){
+    window.open(urlString, '_system');
+}
+ 
 //insert images in comments
 function getCommentImages(attachments){	
 	$.each(attachments, function(key, value){
-		var file = value.name,
+    var file = value.name,
 			url = value.url,
-			imageInsert = "<a class=\"comment_image_link\" target=\"_system\" href=\"" + url + "\"><img class=\"comment_image\" src=\"" + url + "&Width=" + ($(".tkt_top").width()+10) + "\" alt=\"" + file + "\"></a>",
 			ext = file.substr( (file.lastIndexOf('.') +1) ).toLowerCase();
+      
+    var imageInsert = "";
+    if (isPhonegap)
+       imageInsert = "<a class=\"comment_image_link\" href=# onclick='openURL(\"" + url + "\")'><img class=\"comment_image\" src=\"" + url + "&Width=" + ($(".tkt_top").width()+10) + "\" alt=\"" + file + "\"></a>";
+    else
+       imageInsert = "<a class=\"comment_image_link\" target=\"_system\" href=\"" + url + "\"><img class=\"comment_image\" src=\"" + url + "&Width=" + ($(".tkt_top").width()+10) + "\" alt=\"" + file + "\"></a>";
+          
 		if(ext === "jpg" || ext === "png" || ext === "gif" ){
 			$('div.tkt_ini_response:contains(' + file + '), div.comment_main:contains(' + file + ')').append(imageInsert);
 			};		 
