@@ -10,7 +10,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
        isPhonegap = true;
-       alert(navigator.onLine ? 'online' : 'offline');
+       //alert(navigator.onLine ? 'online' : 'offline');
     };
     
 var SiteRoot = 'http://app.bigwebapps.com/';

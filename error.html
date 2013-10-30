@@ -10,7 +10,7 @@
                   <script type="text/javascript">
                     function check_connection() {
                         if (navigator.onLine)
-                           window.open("http://m.bigwebapps.com/index.html", "_self");
+                           window.open(encodeURI("http://m.bigwebapps.com/index.html"), "_self");
                         else
                            alert("Not yet!");   
                     }
