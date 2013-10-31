@@ -10,16 +10,16 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
        isPhonegap = true;
+       //If User is Offline....................................
+       document.addEventListener("offline", onOffline, false);
+       //document.addEventListener("online", onOnline, false); 
        //alert(navigator.onLine ? 'online' : 'offline');
     };
-
-//document.addEventListener("online", onOnline, false);    
+   
 //function onOnline() {               
 //            alert("Internet connected")
 //}
 
-//If User is Offline....................................
-document.addEventListener("offline", onOffline, false);
 function onOffline() {
     window.open("error.html", "_self");
 

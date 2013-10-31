@@ -4,13 +4,14 @@
 var isPhonegap = false;
 var interval;
 document.addEventListener("deviceready", onDeviceReady, false);
-window.onload = onPageReady;
+//window.onload = onPageReady;
 
  function onPageReady() {
  interval = setTimeout(onPageReady1, 3000)
   }
   
 function onDeviceReady() {
+  alert("device ready!");
   clearTimeout(interval);
   isPhonegap = true;
    if (navigator.onLine)
