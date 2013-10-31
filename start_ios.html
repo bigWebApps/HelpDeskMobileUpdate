@@ -2,9 +2,15 @@
 <script src="js/jquery.js"></script>
 <script src="js/phonegap.js"></script> 
 <script type="text/javascript">
-if (navigator.onLine)
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+       alert(navigator.onLine ? 'online' : 'offline');
+       if (navigator.onLine)
        window.open(encodeURI("http://m.bigwebapps.com/index.html"), "_self");
    else
        window.open("error.html", "_self");
+    };
 </script>
 </html>
