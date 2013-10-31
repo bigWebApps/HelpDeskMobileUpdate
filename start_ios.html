@@ -6,9 +6,8 @@
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
-       alert(navigator.onLine ? 'online' : 'offline');
        if (navigator.onLine)
-       window.open(encodeURI("http://m.bigwebapps.com/index.html"), "_self");
+       window.open("http://m.bigwebapps.com/index.html", "_self");
    else
        window.open("error.html", "_self");
     };
