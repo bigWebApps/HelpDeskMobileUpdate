@@ -6,11 +6,19 @@
   <title>Error</title>
   	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-	<script src="js/jquery.js"></script> 
-  
+ 
   	<script src="js/phonegap.js"></script>   
                
                   <script type="text/javascript"> 
+                  
+                  var isPhonegap = false;
+
+                  document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+       isPhonegap = true;
+    };
+                  
                     function check_connection() {
                         if (navigator.onLine)
                            window.open("http://m.bigwebapps.com/index.html", "_self");

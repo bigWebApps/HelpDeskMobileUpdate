@@ -1,12 +1,12 @@
 <html>
-<script src="js/jquery.js"></script>
 <script src="js/phonegap.js"></script> 
 <script type="text/javascript">
-
+var isPhonegap = false;
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
-       if (navigator.onLine)
+  isPhonegap = true;
+   if (navigator.onLine)
        window.open("http://m.bigwebapps.com/index.html", "_self");
    else
        window.open("error.html", "_self");
