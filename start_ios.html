@@ -1,27 +1,37 @@
 <html>
-<script src="js/phonegap.js"></script> 
+<script src="js/phonegap.js"></script>  
 <script type="text/javascript">
 var isPhonegap = false;
+var interval;
 document.addEventListener("deviceready", onDeviceReady, false);
+window.onload = onPageReady;
 
+ function onPageReady() {
+ interval = setTimeout(onPageReady1, 3000)
+  }
+  
 function onDeviceReady() {
+  clearTimeout(interval);
   isPhonegap = true;
-   alert(navigator.onLine ? 'online' : 'offline');
    if (navigator.onLine)
        {
-       document.location.href='http://m.bigwebapps.com/index.html';
        window.open("http://m.bigwebapps.com/index.html", "_self");
        }
    else
        window.open("error.html", "_self");
     };
-    
+ 
+function onPageReady1() {
+if (!isPhonegap) {   
 if (navigator.onLine)
        {
        document.location.href='http://m.bigwebapps.com/index.html';
        }
    else
        document.location.href="error.html";
-
-</script>
+       }
+       else
+onDeviceReady();
+}; 
+</script> 
 </html>

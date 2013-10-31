@@ -20,10 +20,19 @@
     };
                   
                     function check_connection() {
+                    if (isPhonegap) {
                         if (navigator.onLine)
                            window.open("http://m.bigwebapps.com/index.html", "_self");
                         else
-                           alert("Not yet!");   
+                           alert("Not yet!"); 
+                           } else {
+                           if (navigator.onLine)
+       {
+       document.location.href='http://m.bigwebapps.com/index.html';
+       }
+   else
+        alert("Not yet!"); 
+       }  
                     }
                 </script>
   </head>
