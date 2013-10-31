@@ -22,13 +22,16 @@ function onDeviceReady() {
     };
  
 function onPageReady1() {
-if (!isPhonegap) {   
+if (!isPhonegap) { 
+alert(navigator.onLine ? 'online' : 'offline');  
 if (navigator.onLine)
        {
        document.location.href='http://m.bigwebapps.com/index.html';
        }
    else
+   {
        document.location.href="error.html";
+       }
        }
        else
 onDeviceReady();
