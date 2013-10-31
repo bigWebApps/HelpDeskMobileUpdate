@@ -12,6 +12,18 @@ document.addEventListener("deviceready", onDeviceReady, false);
        isPhonegap = true;
        //alert(navigator.onLine ? 'online' : 'offline');
     };
+
+//document.addEventListener("online", onOnline, false);    
+//function onOnline() {               
+//            alert("Internet connected")
+//}
+
+//If User is Offline....................................
+document.addEventListener("offline", onOffline, false);
+function onOffline() {
+    window.open("error.html", "_self");
+
+}
     
 var SiteRoot = 'http://app.bigwebapps.com/';
 var ApiRoot = 'http://api.bigwebapps.com/';
