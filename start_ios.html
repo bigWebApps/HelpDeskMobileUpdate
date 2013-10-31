@@ -6,10 +6,22 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
   isPhonegap = true;
+   alert(navigator.onLine ? 'online' : 'offline');
    if (navigator.onLine)
+       {
+       document.location.href='http://m.bigwebapps.com/index.html';
        window.open("http://m.bigwebapps.com/index.html", "_self");
+       }
    else
        window.open("error.html", "_self");
     };
+    
+if (navigator.onLine)
+       {
+       document.location.href='http://m.bigwebapps.com/index.html';
+       }
+   else
+       document.location.href="error.html";
+
 </script>
 </html>
