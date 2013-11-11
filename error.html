@@ -40,12 +40,12 @@
 function addAlert(message) {
 	window.setTimeout(function(){
   alertMessage.innerHTML = '<button type="button" onclick="toggle(this);" class="close" data-dismiss="alert">&times;</button>' + message;
-  alertMessage.style.visibility='visible';						
+  alertMessage.style.display='block';						
 	},800);
 	};
   
   function toggle(el) {
-  alertMessage.style.visibility = (alertMessage.style.visibility == 'hidden') ? 'visible' : 'hidden';
+  alertMessage.style.display = (alertMessage.style.display == 'none') ? 'block' : 'none';
   alertMessage.innerHTML = "";
 }
     
@@ -127,17 +127,16 @@ function addAlert(message) {
   </style>
   <body>
    <div class="catch-error">
-        <h1>
-            Uh... a Yeti just attacked your camp!</h1>
         <div class="catch-error-description">
             <h2>
                 Check your internet connection!
                 </h2>
             <div id="ctl00_PageBody_StackTrace" class="return-button">
-            <div id="showalert" class="alert alert-error" style="visibility:hidden;"></div>
+            <div id="showalert" class="alert alert-error" style="display:none;"></div>
                 <center><button style="width: 200px;" onclick="check_connection()" class="btn btn-large btn-block btn-success">Refresh</button></center>
             </div>
-            
+<p/>
+<h4> P.S.  Uh... a Yeti just attacked your  camp!</h4>            
         </div>       
     </div>
   </body>
