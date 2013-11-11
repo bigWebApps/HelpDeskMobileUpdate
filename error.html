@@ -12,6 +12,7 @@
                   <script type="text/javascript"> 
                   
                   var isPhonegap = false;
+                  var SiteRoot = 'http://m.bigwebapps.com/';
 
                   document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -22,18 +23,32 @@
                     function check_connection() {
                     if (isPhonegap) {
                         if (navigator.onLine)
-                           window.open("http://m.bigwebapps.com/index.html", "_self");
+                           window.open(SiteRoot + "index.html", "_self");
                         else
-                           alert("Not yet!"); 
+                           addAlert('Not yet! Try again.') 
                            } else {
                            if (navigator.onLine)
        {
-       document.location.href='http://m.bigwebapps.com/index.html';
+       document.location.href= SiteRoot + 'index.html';
        }
    else
-        alert("Not yet!"); 
+        addAlert('Not yet! Try again.')
        }  
                     }
+                    
+// Global Alert Action
+function addAlert(message) {
+	window.setTimeout(function(){
+  alertMessage.innerHTML = '<button type="button" onclick="toggle(this);" class="close" data-dismiss="alert">&times;</button>' + message;
+  alertMessage.style.visibility='visible';						
+	},800);
+	};
+  
+  function toggle(el) {
+  alertMessage.style.visibility = (alertMessage.style.visibility == 'hidden') ? 'visible' : 'hidden';
+  alertMessage.innerHTML = "";
+}
+    
                 </script>
   </head>
   <style>
@@ -119,9 +134,14 @@
                 Check your internet connection!
                 </h2>
             <div id="ctl00_PageBody_StackTrace" class="return-button">
+            <div id="showalert" class="alert alert-error" style="visibility:hidden;"></div>
                 <center><button style="width: 200px;" onclick="check_connection()" class="btn btn-large btn-block btn-success">Refresh</button></center>
             </div>
+            
         </div>       
     </div>
   </body>
+  <script>
+  var alertMessage = document.getElementById("showalert");
+  </script>
 </html>

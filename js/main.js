@@ -21,8 +21,10 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //}
 
 function onOffline() {
+ if (isPhonegap) 
     window.open("error.html", "_self");
-
+ else
+    document.location.href= 'error.html'; 
 }
     
 var SiteRoot = 'http://app.bigwebapps.com/';
@@ -71,6 +73,7 @@ var SherpaDesk = {
                 },
             url: url + method,
             cache: false,
+            error: function(){onOffline();},
             data: data, 
             dataType: 'json'   
 		}).promise();
