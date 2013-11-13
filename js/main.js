@@ -5,13 +5,21 @@
 $.fx.off = /iPhone/i.test(navigator.userAgent) && !(window.screen.height == (1136 / 2));
 
 var isPhonegap = false;
+var isOnline = true;
+var interval;
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
        isPhonegap = true;
        //If User is Offline....................................
-       document.addEventListener("offline", onOffline, false);
+       document.addEventListener("offline",function(){ if (!$("#offline").length) $('body').prepend('<div id=offline>offline</div><div class="catch-error"><div class="catch-error-description"><h2>Check your internet connection!</h2><div id="ctl00_PageBody_StackTrace" class="return-button"><p /><p /><h4>P.S.  Uh... a Yeti just attacked your  camp!</h4></div></div>');
+         $("#offline").show();
+         isOnline = false;
+         //window.open("error.html", "_self"); 
+         },false);
+       document.addEventListener("online",function(){ $("#offline").hide(); isOnline = true; window.open(MobileSite + "index.html", "_self"); },false);
+       //document.addEventListener("offline", onOffline, false);
        //document.addEventListener("online", onOnline, false); 
        //alert(navigator.onLine ? 'online' : 'offline');
     };
@@ -20,15 +28,19 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //            alert("Internet connected")
 //}
 
+var Site = 'bigwebapps.com/';
+
+var MobileSite = 'http://m.'+Site;
+
 function onOffline() {
  if (isPhonegap) 
-    window.open("error.html", "_self");
+    window.open("error.html", "_self"); 
  else
     document.location.href= 'error.html'; 
 }
     
-var SiteRoot = 'http://app.bigwebapps.com/';
-var ApiRoot = 'http://api.bigwebapps.com/';
+var AppSite = 'http://app.'+Site;
+var ApiSite = 'http://api.'+Site;
 
 var SherpaDesk = {
 	init: function(){
@@ -38,7 +50,7 @@ var SherpaDesk = {
 			org: localStorage.hd_org_key,
 			inst: localStorage.hd_inst_key,
 			role: localStorage.hd_user_role,
-			url: ApiRoot
+			url: ApiSite
 			}; 
 		
 		$(document).ajaxStart(function() { $( "body" ).addClass('spinner');	 }).ajaxComplete(function() { $( "body" ).removeClass('spinner'); });
@@ -58,7 +70,9 @@ var SherpaDesk = {
 		}, //End init
 		
 	//Global AJAX request
-	getSherpaDesk: function(config, method, apimethod, data){		
+	getSherpaDesk: function(config, method, apimethod, data){	
+    if (!isOnline)	{if (!$("#offline").length) $('body').prepend('<div id=offline>offline</div><div class="catch-error"><div class="catch-error-description"><h2>Check your internet connection!</h2><div id="ctl00_PageBody_StackTrace" class="return-button"><p /><p /><h4>P.S.  Uh... a Yeti just attacked your  camp!</h4></div></div>');
+         $("#offline").show();}
 		if(config.user && config.pass)	{var header = config.user + ':' + config.pass;} 
 										else 
 										{var header = config.org + '-' + config.inst + ':' + config.apiKey;};		
@@ -903,7 +917,7 @@ var SherpaDesk = {
 	showTicketHeader: function(){
 		$('body').empty();
     var full_app_link = "",
-        urlString = SiteRoot + "?dept=" + localStorage.hd_inst_key + "&org=" + localStorage.hd_org_key;
+        urlString = AppSite + "?dept=" + localStorage.hd_inst_key + "&org=" + localStorage.hd_org_key;
     if (isPhonegap)
        full_app_link = "href=#  onclick=openURLsystem('" + urlString + "')";
     else
@@ -1233,7 +1247,7 @@ function ticketListMenuActions(configPass, key){
 
 //open link	in blank
 function openURL(urlString){
-    window.open(urlString, '_blank', 'location=no, toolbar=no');
+    window.open(urlString, '_blank', 'location=no,toolbar=no');
 }
 
 //open link	in system
