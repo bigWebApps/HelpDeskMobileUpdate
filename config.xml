@@ -15,11 +15,10 @@
 	        HelpDesk by bigWebApps mobile version.  Create, Read and respond tickets sent through your HelpDesk by bigWebApps account.  http://helpdesk.bigwebapps.com 
 	    </description>
 	
-	    <author href="http://helpdesk.bigwebapps.com" email="support@bigwebapps.com">
+	    <author href="http://m.bigwebapps.com" email="support@bigwebapps.com">
 	        bigWebApps
 	    </author>
       
-      <!--content src="http://m.bigwebapps.com/index.html" /-->
       <content src="start_ios.html" />
 		
 		<preference name="phonegap-version" value="2.9.0" />

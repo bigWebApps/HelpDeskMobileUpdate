@@ -34,13 +34,33 @@ var loc = event.url;
 });
     }
     
+            function openUrl(url) {
+            if (isPhonegap)
+                window.open(MobileSite + "index.html", "_self");
+                //openMobileSite(MobileSite + "index.html");
+            else
+                document.location.href = MobileSite + "index.html";
+        };
+           
     function redirectToPage() {
         if (navigator.onLine)
-            {//window.open(MobileSite + "index.html", "_self");
-               openMobileSite(MobileSite + "index.html");         
+            {  if (isPhonegap) openMobileSite(MobileSite + "index.html"); 
+               else {
+               var img = document.body.appendChild(document.createElement("img"));
+                img.style.display = 'none';
+                img.onload = function () {
+                    document.location.href = MobileSite + "index.html";
+                };
+                img.onerror = function () {
+                    document.location.href = "error.html"
+                };
+                img.src = MobileSite + "img/head-menu2x.png?rand=" + Math.random();
+                }       
             }             
         else
-            window.open("error.html", "_self");
+            { if (isPhonegap)  window.open("error.html", "_self"); 
+               else document.location.href = "error.html";
+            }
     };
 
     function onPageReady1() {
