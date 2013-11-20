@@ -52,7 +52,7 @@ var loc = event.url;
                     document.location.href = MobileSite + "index.html";
                 };
                 img.onerror = function () {
-                    document.location.href = "error.html"
+                    window.location.href = "error.html"
                 };
                 img.src = MobileSite + "img/head-menu2x.png?rand=" + Math.random();
                 }       
