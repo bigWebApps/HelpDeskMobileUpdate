@@ -52,14 +52,14 @@ var loc = event.url;
                     document.location.href = MobileSite + "index.html";
                 };
                 img.onerror = function () {
-                    document.location.href = "error.html";
+                    document.location = "error.html";
                 };
                 img.src = MobileSite + "img/head-menu2x.png?rand=" + Math.random();
                 }       
             }             
         else
             { if (isPhonegap)  window.open("error.html", "_self"); 
-               else document.location.href = "error.html";
+               else document.location = "error.html";
             }
     };
 
