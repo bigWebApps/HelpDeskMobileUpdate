@@ -77,15 +77,22 @@ var SherpaDesk = {
 										else 
 										{var header = config.org + '-' + config.inst + ':' + config.apiKey;};		
 		var url = config.url;
-		if( apimethod != '' ){var methodType = apimethod;} else {var methodType = 'GET';};
-        
+		var limit = ""; 
+		if( apimethod ){var methodType = apimethod;} 
+    else {var methodType = 'GET'; 
+          if (method.indexOf("limit") < 0) 
+          {
+           if (method.indexOf("?") != -1) limit = "&"; else limit = "?"; 
+           limit += "limit=200";
+          }
+        };  
         return $.ajax({
             type: methodType,
             beforeSend: function (xhr) {
                 xhr.withCredentials = true;
                 xhr.setRequestHeader('Authorization', 'Basic ' + btoa(header));
                 },
-            url: url + method,
+            url: url + method + limit,
             cache: false,
             error: function(){onOffline();},
             data: data, 
