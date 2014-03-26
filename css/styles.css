@@ -337,6 +337,10 @@ body.login div.content {
 	background:#ff9900 url(../img/head-back2x.png) center center no-repeat;
 	background-size: 50px 50px;
 	}
+.home_icon {
+	background:#ff9900 url(../img/head-home2x.png) center center no-repeat;
+	background-size: 50px 50px;
+	}
 .info_icon {
 	background:#2a2a2b url(../img/head-info.png) center center no-repeat;
 	-webkit-tap-highlight-color: #3b3b3d;
@@ -512,6 +516,126 @@ p.header_label {
 		#jPanelMenu-menu li input.ticket-jump-menu:-ms-input-placeholder { /* Internet Explorer 10+ */
 		    color:    #999;
 		}
+
+/*---------------- Dashboard -----------------*/
+
+.blue-fade {
+	background: #ff9900;
+	color: #ffffff;
+	box-sizing: border-box;
+	}
+	
+	.blue-fade:hover,
+	.blue-fade:active {
+		background: #ff9900;
+	  	background: -moz-linear-gradient(top, #ff9900 0%, #FFAC30 100%);
+	  	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff9900), color-stop(100%,#FFAC30));
+	  	background: -webkit-linear-gradient(top, #ff9900 0%,#FFAC30 100%);
+	  	background: -o-linear-gradient(top, #ff9900 0%,#FFAC30 100%);
+	  	background: -ms-linear-gradient(top, #ff9900 0%,#FFAC30 100%);
+	  	background: linear-gradient(top, #ff9900 0%,#FFAC30 100%);
+	  	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9900', endColorstr='#FFAC30',GradientType=0 );
+		cursor: pointer;
+		}
+		
+	.blue {
+		background: #FFAC30;
+		color: #ffffff;
+		box-sizing: border-box;
+		}
+	.green {
+		background: #51a351;
+		color: #ffffff;
+		box-sizing: border-box;
+		}
+	.left-num {
+		float: left;
+		padding: 5px;
+		text-align: center;
+		font-size: 40px;
+		line-height: 40px;
+		width: 50%;
+		box-sizing: border-box;
+		}
+		
+.dashboard {max-width: 600px; margin: 0 auto; box-sizing: border-box;}
+
+.dashboard a:hover {text-decoration: none;}
+
+.dashboard .dash-tkts {margin-bottom: 10px; overflow: hidden; box-sizing: border-box;}	
+.dashboard .dash-tkts .dash-astech {
+	padding: 10px;
+	text-align:center;
+	width: 55%;
+	height: 170px;
+	float: left;
+	}
+	.dashboard p {
+		margin: 0;
+		}
+	.dashboard .dash-tkts .dash-astech p.dash-desc-large {
+		font-size: 22px;
+		line-height: 22px;		
+		color: #ffffff;
+		}
+	.dashboard .dash-tkts .dash-astech p.dash-number-large {
+		font-size: 100px;
+		line-height: 100px;
+		margin-top: 10px;
+		}
+	.dashboard .dash-tkts .tkt-right {
+		float: left;
+		width: 45%;
+		margin-right: -10px;
+		margin-left: 10px;
+		margin-bottom: 10px;
+		box-sizing: border-box;
+		}
+		.dashboard .dash-tkts .tkt-right.last {
+			margin-bottom: 0;
+			box-sizing: border-box;
+			}
+		.dashboard .dash-tkts .get-tickets.tkt-right:hover,
+		.dashboard .option-single:hover {
+			cursor: pointer;
+			} 
+	.dashboard .dash-tkts p.dash-number-sm {
+		}
+		.dashboard .dash-tkts p.dash-number-sm.over99 {
+			font-size: 26px;
+			}
+	.dashboard .dash-tkts p.dash-desc {
+		text-align: center;
+		font-size: 16px;
+		line-height: 1em;
+		margin-top: 8px;
+		color: #ffffff;
+		}
+	.dashboard .dash-options .option-left,
+	.dashboard .dash-options .option-right {
+		width: 50%;
+		float: left;
+		box-sizing: border-box;
+		}
+	.dashboard .dash-options .option-left {
+		padding: 0 5px 0 0;
+		}
+	.dashboard .dash-options .option-right {
+		padding: 0 0 0 5px;
+		}
+	.dashboard .dash-options .option-single {
+		margin-bottom: 10px;
+		}
+	.dashboard .dash-options p.dash-icon {
+		float: left;
+		background-color: #ff9900;
+		}
+	.dashboard .dash-options p.dash-desc-md {
+		line-height: 55px;
+		text-align: center;
+		font-size: 22px;
+		}
+
 	
 /*------------ Not Tickets Found -------------*/
 .noTickets {
@@ -542,22 +666,23 @@ p.header_label {
 
 
 		
-/*------------ Queue List ---------------*/
-.queues_list{padding: 0 10px;}
+/*------------ Queue/Account List ---------------*/
+.queues_list,
+.accounts_list{padding: 0 10px;}
 
 .queues_list ul.queues {}
-.queues_list ul.queues li.queue {
+.queues_list ul.queues li.queue,
+.accounts_list ul.accounts li.account{
 	background-color: #ffffff;
 	padding: 0;
 	margin: 0 0 20px 0;
 	overflow: hidden;
 	}
-.queues_list ul.queues li.queue a,
-.queues_list ul.queues li.queue a:hover {
-	
-	}
-.queues_list ul.queues li.queue div.que_main {position: relative;}
-.queues_list ul.queues li.queue div.que_main p.que_title {
+
+.queues_list ul.queues li.queue div.que_main,
+.accounts_list ul.accounts li.account div.account_main {position: relative;}
+.queues_list ul.queues li.queue div.que_main p.que_title,
+.accounts_list ul.accounts li.account div.account_main p.account_title {
 	font-size: 18px;
 	line-height: 32px;
 	color: #3b3b3d;
@@ -572,7 +697,8 @@ p.header_label {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 	}
-.queues_list ul.queues li.queue div.que_main p.que_tkt_cnt {
+.queues_list ul.queues li.queue div.que_main p.que_tkt_cnt,
+.accounts_list ul.accounts li.account div.account_main p.account_tkt_cnt {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -588,7 +714,6 @@ p.header_label {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	}
-
 
 /*------------ Ticket List ---------------*/
 .tickets_list {
@@ -1004,11 +1129,21 @@ p.header_label {
 		font-size: 10px;
 		}
 
-/*------------- Add Time - Ticket Detail ------------*/
+/*------------- Add Time - Ticket Detail & Time roll add ------------*/
 
-
+		
 		.content.time_add .tkt_add_time{
 			margin: 20px 0;
+			}
+		.content.time_add.timeroll_add {
+			padding: 0 10px 50px;
+			}
+			.content .timelog	 {
+				max-width: 960px;
+				margin: 0 auto;
+				}		
+		.content.timeroll_add form{
+			margin: 0 auto;
 			}
 		.content.time_add .tkt_add_time .tkt_add_time_input {
 			overflow: hidden; 
@@ -1070,6 +1205,104 @@ p.header_label {
 		    -webkit-appearance: none;
 		    margin: 0;
 		}
+
+
+/*------------ Time Roll / Logs ------------------*/
+
+ul.timelogs {width: 100%;}
+ul.timelogs p {
+	padding:0; 
+	margin:0;
+	}
+ul.timelogs li.log_entry {
+	width: 100%; 
+	overflow:hidden;
+	margin-bottom: 10px;
+	background-color: #ffffff;
+	}
+
+ul.timelogs li.log_entry .log_time_amount {
+	float: right;
+	position: relative;
+	min-width: 70px;
+	margin-top: 6px;
+	margin-left: 10px;
+	}
+ul.timelogs li.log_entry .log_time_amount p{	
+	font-size: 28px;
+	line-height: 28px;
+	font-weight: bold;
+	text-align: right;
+	color: #0061A2;	
+	}
+	ul.timelogs li.log_entry .log_time_amount p span{
+		font-weight: normal;
+		font-size: 18px;
+		line-height: 18px;
+		}
+	ul.timelogs li.log_entry .log_time_amount p.date {
+		font-size: 12px;
+		line-height: 14px;
+		font-weight: normal;
+		margin: 0;
+		color: #666;		
+		text-align: right;
+		}
+
+ul.timelogs li.log_entry .log_data .log_data_top{
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 5px 10px;
+	border-top: 1px solid #CFCFCF;
+	}
+	
+ul.timelogs li.log_entry .log_data p.log_type{
+	line-height: 20px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 300px;
+	color: #0061A2;
+	}
+	ul.timelogs li.log_entry .log_data p.log_type.smaller {
+		font-size: 12px;
+		line-height: 18px;
+		color: #666;
+		}
+		ul.timelogs li.log_entry .log_data p.log_type.smaller strong {
+			color: #0061A2;
+			}
+	
+/* 
+ul.timelogs li.log_entry .log_data .log_data_top p.log_linked.linked{
+	float: right;
+	margin: -3px 0 -5px;
+	width: 25px;
+	height: 25px;
+	background: url(../imgs/fb-icon.png) no-repeat 0 0;
+	}
+	
+ul.timelogs li.log_entry .log_data .log_data_top p.log_linked.not_linked{
+	float: right;
+	margin: -3px 0 -5px;
+	width: 25px;
+	height: 25px;
+	background: url(../imgs/fb-icon-grey.png) no-repeat 0 0;
+	} 	
+*/
+	
+ul.timelogs li.log_entry .log_data .log_data_bottom{
+	overflow: hidden;
+	padding: 5px 10px;
+	box-sizing: border-box;
+	border-bottom: 1px solid #DBDBDB;
+	}
+	
+ul.timelogs li.log_entry .log_data .log_data_bottom p.log_note{
+	font-size: 14px;
+	line-height: 16px;
+	font-weight: normal;
+	}
 
 /*------------ Add Ticket View -------------------*/
 
