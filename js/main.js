@@ -9,7 +9,7 @@ var Site = 'bigwebapps.com/';
 var MobileSite = 'http://m.'+Site;
 var AppSite = 'http://app.'+Site;
 
-var ApiSite = 'http://api.'+Site; // http://api.beta.
+var ApiSite = 'http://api.'+Site;
 
 //Phonegap specific
 var isPhonegap = false;
@@ -201,11 +201,15 @@ var SherpaDesk = {
 					   }
 					}			
 					 else {
-						//SherpaDesk.getTickets(configPass);
-						
+					    if( localStorage.hd_tech_admin === "false" ){
+					    //Sidebar Setup
+			
+						SherpaDesk.getTickets(configPass);
+						}
 						// -------------------------------------------------------
 						// ----------  Set initial landing page	------------------
 						// -------------------------------------------------------					
+						else
 						SherpaDesk.getDashboard(configPass);	
 					}	
 				}
@@ -1312,15 +1316,8 @@ var SherpaDesk = {
 		$('body').empty();
 		
 		// Create link to specific org | instance
-		var full_app_link = "",
-		    urlString = AppSite + "?dept=" + localStorage.hd_inst_key + "&org=" + localStorage.hd_org_key;
-	  	if (isPhonegap)
-		 	full_app_link = "href=#  onclick=openURLsystem('" + urlString + "')";
-	  	else
-			full_app_link = "href=" + urlString + " target=_system";
-	  	//var organization = {"full_app_link" : full_app_link};
 		
-		numbers["full_app_link"] = full_app_link; //Add link to object
+		numbers["full_app_link"] = fullapplink(); //Add link to object
 		
 		var template = Handlebars.templates['dashboard']; 							
 		$('body').append( template(numbers) );
@@ -1444,6 +1441,19 @@ SherpaDesk.init(); // Initialize the entire app here <- kinda important
 
 	
 // add listeners and global helper functions --------------------------------------------
+
+function fullapplink (){
+// Create link to specific org | instance
+		var full_app_link = "",
+		    urlString = AppSite + "?dept=" + localStorage.hd_inst_key + "&org=" + localStorage.hd_org_key;
+	  	if (isPhonegap)
+		 	full_app_link = "href=#  onclick=openURLsystem('" + urlString + "')";
+	  	else
+			full_app_link = "href=" + urlString + " target=_system";
+	  	//var organization = {"full_app_link" : full_app_link};
+		
+		return full_app_link; //Add link to object
+}
 
 // Login
 function checkLogin(configPass){	
@@ -1870,11 +1880,22 @@ function queuesAndTicketHeader(configPass, tktType) {
 			});
 	} else {
 		//Set the home button
+		if( localStorage.hd_tech_admin === "true" ){
 		$('a.home_button').off().on('click', function(e){
 			e.preventDefault();
 			$('body').empty().addClass('spinner');	
 			SherpaDesk.init();
 		});
+		}
+		else
+		{
+		//Sidebar Setup
+		  $('body').prepend("<div class='side-menu' style='display:none;'><ul><li class='searchform'> <input type='text' placeholder='Jump to Ticket #' class='ticket-jump-menu'></li><li><p id='queues'><i class='icon-folder-open icon-white'></i> Queues</p></li><li><p id='orgInst'><i class='icon-list-alt icon-white'></i> Change Org/Inst</p></li><li><p id='logout'><i class='icon-off icon-white'></i> Log out</p></li><li><a " + fullapplink() + "><p id='fullSite'><i class='icon-share-alt icon-white'></i> Switch to Full App</p></a></li></ul></div>");
+			$("#left-button").removeClass().addClass("menu_button header_left menu_icon ticket_list_menu");
+			ticket_list_menu(".side-menu", "left");
+			ticketListMenuActions(configPass);
+			ticketJump(configPass);
+		}
 	};
 	
 	//Init list.js only if more than 0
