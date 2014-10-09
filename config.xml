@@ -28,6 +28,7 @@
     <param name="android-package" value="org.apache.cordova.NetworkManager" />
 </feature>
 <gap:plugin name="org.apache.cordova.network-information"/>
+<gap:plugin name="org.apache.cordova.inappbrowser" />
 		
 		<!-- Customize your app and platform with the preference element. -->
     <!-- <preference name="phonegap-version"      value="3.4.0" /> -->      <!-- all: current version of PhoneGap -->
