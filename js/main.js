@@ -389,12 +389,17 @@ var SherpaDesk = {
 		tktType.Id = localStorage.getItem('hd_is_from_id');
 		
 		if(tktType && tktType.type=="accounts"){
-				var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'tickets?account=' + tktType.Id + '&status=open&limit=500');
+				var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'tickets?account=' + tktType.Id + '&status=open,onhold&limit=500');
 			} else if (tktType && tktType.type=="queues") {
 				var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'queues/' + tktType.Id);
 			} else {
-				var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'tickets?status=open&limit=500&role=' + localStorage.hd_user_role);
-			}			
+			    var status = "open";
+			    if (localStorage.hd_user_role == "all")
+			        status = 'allopen';
+			    if (localStorage.hd_user_role == "user")
+			        status = 'open,onhold';
+			    var getTicketList = SherpaDesk.getSherpaDesk(configPass, 'tickets?status=' + status + '&limit=500&role=' + localStorage.hd_user_role);
+			}
 		
 		getTicketList.then(
 			//sucess
@@ -670,7 +675,7 @@ var SherpaDesk = {
 				    "status" : "closed",
 				    "note_text": details,
 				    "is_send_notifications": notify,
-				    "resolved": false,
+				    "resolved": true,
 				    "confirmed": false
 				},
 			method = 'tickets/' + key ,
@@ -1890,7 +1895,7 @@ function queuesAndTicketHeader(configPass, tktType) {
 		else
 		{
 		//Sidebar Setup
-		  $('body').prepend("<div class='side-menu' style='display:none;'><ul><li class='searchform'> <input type='text' placeholder='Jump to Ticket #' class='ticket-jump-menu'></li><li><p id='orgInst'><i class='icon-list-alt icon-white'></i> Change Org/Inst</p></li><li><p id='logout'><i class='icon-off icon-white'></i> Log out</p></li><li><a " + fullapplink() + "><p id='fullSite'><i class='icon-share-alt icon-white'></i> Switch to Full App</p></a></li></ul></div>");
+		    $('body').prepend("<div class='side-menu' style='display:none;'><ul><li class=searchform><input type=text placeholder='Jump to Ticket #' class='ticket-jump-menu'></li><li><p id='orgInst'><i class='icon-list-alt icon-white'></i> Change Org/Inst</p></li><li><p id='logout'><i class='icon-off icon-white'></i> Log out</p></li><li><a " + fullapplink() + "><p id='fullSite'><i class='icon-share-alt icon-white'></i> Switch to Full App</p></a></li></ul></div>");
 			$("#left-button").removeClass().addClass("menu_button header_left menu_icon ticket_list_menu");
 			ticket_list_menu(".side-menu", "left");
 			ticketListMenuActions(configPass);
