@@ -1,6 +1,17 @@
 /*jshint -W004, -W041, -W103, eqeqeq: false, noempty: false, undef: false, latedef: false, eqnull: true, multistr: true*/
 /*global jQuery, $ */
 var isSD = false;
+
+//Root Names
+var Site = 'bigwebapps.com/';
+var MobileSite = 'http://m.' + Site;
+var AppSite = 'https://app.' + Site;
+var ApiSite = 'http://api.' + Site;
+
+if (!isSD){
+    document.title = 'HelpDesk';
+}
+
 var year="2015";
 var appVersion = "25";
 

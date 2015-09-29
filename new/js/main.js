@@ -1,12 +1,6 @@
 /*jshint -W004, -W041, -W103, eqeqeq: false, noempty: false, undef: false, latedef: false, eqnull: true, multistr: true*/
 /*global jQuery, $ */
 
-//Root Names
-var Site = 'bigwebapps.com/';
-var MobileSite = 'http://m.' + Site;
-var AppSite = 'https://app.' + Site;
-var ApiSite = 'http://api.' + Site;
-
 var isExtension = window.self !== window.top;
 if (isExtension) localStorage.setItem("referrer", Page);
 
@@ -109,6 +103,19 @@ function updateBadge() {
 function onDeviceReady() {
     //alert("gap init");
     isPhonegap = true;
+    if (updateStatusBar && isPhonegap) {
+        var t=document.getElementsByTagName("header")[0];
+        if (t){
+            t.style.paddingTop = "18px";
+            t.style.height = "63px";
+            $('body').css('margin-top', function (index, curValue) {
+                return parseInt(curValue, 10) + 18 + 'px';
+            });
+        }
+        t = document.getElementById("ptr");
+        if (t){t.style.marginTop = "18px";}
+        if (Page == "dashboard.html") $("#techStat").css("padding-top", "18px");
+    }
 }
 
 //open link	in blank
@@ -210,10 +217,6 @@ function redirectToPage() {
     {
         offLine();
     }
-}
-
-if (!isSD){
-    document.title = 'HelpDesk';
 }
 
 //pull to refresh
@@ -490,7 +493,8 @@ org -
 */
 
 function showError(e){
-    var error = e.data || (((e || {}).responseJSON || {}).ResponseStatus || {}).Message;
+    console.log(e);
+    var error = e.data || (((e || {}).responseJSON || {}).ResponseStatus || {}).Message || e.statusText;
     setTimeout(function(){
         reveal();
         userMessage.showMessage(false, error || "Error. Please contact Administrator");
@@ -876,7 +880,7 @@ $(document).ready(function(){
                     "action" : "pickup",
                     "note_text": ""
                 }, 'PUT').then(function (d) {
-                    userMessage.showMessage(true, 'Ticket pickup was Succesfull <i class="fa fa-thumbs-o-up"></i>');
+                    userMessage.showMessage(true, 'Ticket pickup was Succesfull <i class="ion-thumbsup"></i>');
                     window.location = "ticket_detail.html";
                 },
                                function(e) {
@@ -977,7 +981,7 @@ $(document).ready(function(){
                     setTimeout(
                         function()
                         {
-                            userMessage.showMessage(true, 'Ticket has been Reopened <i class="fa fa-thumbs-o-up"></i>');
+                            userMessage.showMessage(true, 'Ticket has been Reopened <i class="ion-thumbsup"></i>');
                             window.history.back();
 
                         }, 1000);
@@ -1013,11 +1017,11 @@ $(document).ready(function(){
                 setTimeout(
                     function()
                     {
-                        userMessage.showMessage(true, 'Ticket has been closed <i class="fa fa-thumbs-o-up"></i>');
+                        userMessage.showMessage(true, 'Ticket has been closed <i class="ion-thumbsup"></i>');
                         window.history.back();
 
                     }, 1000);
-                userMessage.setMessage(true, "Ticket was Closed <i class='fa fa-thumbs-o-up'></i>");
+                userMessage.setMessage(true, "Ticket was Closed <i class='ion-thumbsup'></i>");
             },
                            function (e, textStatus, errorThrown) {
                 showError(e);
@@ -1782,7 +1786,7 @@ $(document).ready(function(){
                     "role" : value
                 }, 'POST').then(
                     function (d) {
-                        userMessage.showMessage(true, value +' was created <i class="fa fa-thumbs-o-up"></i>', function(){ 
+                        userMessage.showMessage(true, value +' was created <i class="ion-thumbsup"></i>', function(){ 
                             localStorage.setItem('add_user_name', '');
                             if (value == "Tech")
                             {
@@ -2012,7 +2016,7 @@ $(document).ready(function(){
                 },
                        'POST').then(function (d) {
                     localStorage.setItem('isMessage','truePos');
-                    localStorage.setItem('userMessage','Time was successfully added <i class="fa fa-thumbs-o-up"></i>');
+                    localStorage.setItem('userMessage','Time was successfully added <i class="ion-thumbsup"></i>');
                     window.location.replace("ticket_detail.html");
                 },
                                     function (e, textStatus, errorThrown) {
@@ -2177,7 +2181,7 @@ $(document).ready(function(){
                         "stop_date": dat2 ? edat : ""
                     }, isEdit ? 'PUT' : 'POST').then(function (d) {
                         localStorage.setItem('isMessage','truePos');
-                        localStorage.setItem('userMessage','Time was successfully added <i class="fa fa-thumbs-o-up"></i>');
+                        localStorage.setItem('userMessage','Time was successfully added <i class="ion-thumbsup"></i>');
                         backFunction();
                     },
                                                      function (e, textStatus, errorThrown) {
@@ -2223,7 +2227,7 @@ $(document).ready(function(){
                 getApi('tickets/' + localStorage.getItem('ticketId'), response, 'PUT').then(function(results){
 
                     console.log('Then Complete');
-                    userMessage.setMessage(true, "Ticket was successfully updated <i class='fa fa-thumbs-o-up'></i>");
+                    userMessage.setMessage(true, "Ticket was successfully updated <i class='ion-thumbsup'></i>");
                     window.location = "ticket_detail.html";
                     userMessage.showMessage(true);
 
@@ -2913,7 +2917,7 @@ $(document).ready(function(){
                     returnData[i].index = returnData[i].key +',' + i;
                     var data = returnData[i].key;
                     //subject = createElipse(subject, 0.80, 12);
-                    var newMessage = (returnData[i].is_new_tech_post && returnData[i].technician_email != localStorage.userName) || (returnData[i].is_new_user_post && returnData[i].user_email != localStorage.userName) ? "<i class='fa fa-envelope-o' style='color: #25B0E6;'></i> " : "";
+                    var newMessage = (returnData[i].is_new_tech_post && returnData[i].technician_email != localStorage.userName) || (returnData[i].is_new_user_post && returnData[i].user_email != localStorage.userName) ? "<i class='ion-ios-email' style='color: #25B0E6;'></i> " : "";
                     // ensure ticket initial post length is not to long to be displayed (initial post is elipsed if it is)
                     if(initialPost.length > 400)
                     {
@@ -3952,8 +3956,6 @@ $(document).ready(function(){
                 if (orgName)
                     $("#indexTitle").html(orgName);
                 TicketsCounts.init();
-                if (updateStatusBar)
-                    $("#techStat").css("padding-top", "38px");
                 getQueues.init("#DashBoradQueues", 3);
                 if(isAccount)
                     accountList.init("#activeList", 1);
@@ -4251,18 +4253,7 @@ $(document).ready(function(){
         //userInfo.init();
 
         //when user logged in
-        if (updateStatusBar) {
-            var t=document.getElementsByTagName("header")[0];
-            if (t){
-                t.style.paddingTop = "18px";
-                t.style.height = "63px";
-                $('body').css('margin-top', function (index, curValue) {
-                    return parseInt(curValue, 10) + 18 + 'px';
-                });
-            }
-            t = document.getElementById("ptr");
-            if (t){t.style.marginTop = "18px";}
-        }
+        
         //set the name of the nav side menu
         //$(".navName").html(localStorage.getItem("userFullName"));
         //set user avatar picture in side menu
