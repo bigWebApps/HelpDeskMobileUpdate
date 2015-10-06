@@ -26,7 +26,7 @@
 #date_start, #date_end {width: 49.5% !important}
 
 .dashboard {
-  background: #333333;
+  background: rgba(0,0,0, .4);
   height: 190px;
   position: relative;
   width: 100%;
@@ -75,7 +75,7 @@
   margin-left: 20px;
   overflow: auto;
   z-index: 1;
-  padding-top: 20px;
+  padding-top: 47px;
   margin: 0 auto;
   max-width: 650px;
 }
