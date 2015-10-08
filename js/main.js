@@ -1073,6 +1073,14 @@ $(document).ready(function(){
                 });
         }
     };
+    
+    var nosearch = {   
+        minimumResultsForSearch: Infinity,
+        width: "95%"
+    };
+    var osearch = {   
+        width: "95%"
+    };
 
     // create a new ticket
     var newTicket = {
@@ -1110,6 +1118,7 @@ $(document).ready(function(){
                 location.done(
                     function(locationResults){
                         fillSelect(locationResults, "#ticket_Location", "");
+                        $("#ticket_Location").select2(nosearch);
                         reveal();
                     });
         },
@@ -1157,6 +1166,7 @@ $(document).ready(function(){
                          localStorage.setItem('add_user_accountid', '');
                          $("#addTicketAccounts").val(accountset);
                      }
+                     $("#addTicketAccounts").select2(osearch);
                       // ticket Location_add_Ticket
                 if (isLocation)
                 {
@@ -1201,6 +1211,7 @@ $(document).ready(function(){
                     {
                         $("#addTicketUser option").eq(0).before($("<option></option>").val(userid).text(userName));
                     }
+                    $("#addTicketUser").select2(osearch);
                 },
                            function(e) {
                     showError(e);
@@ -1222,6 +1233,7 @@ $(document).ready(function(){
                         localStorage.setItem('add_user_techid', '');
                         $("#addTicketTechs").val(techid);
                     }
+                    $("#addTicketTechs").select2(osearch);
                 },
                                  function(e) {
                     showError(e);
@@ -1233,6 +1245,7 @@ $(document).ready(function(){
                 classes.done(
                     function(classResults){
                         fillClasses(classResults, "#classTicketOptions", "<option value=0 disabled selected>choose a class</option>");
+                        $("#classTicketOptions").select2(nosearch);
                     });
 
             }
@@ -1341,6 +1354,7 @@ $(document).ready(function(){
                          localStorage.setItem('add_user_accountid', '');
                          $("#addTicketAccounts").val(accountset);
                      }
+                     $("#addTicketAccounts").select2();
                      reveal();
                  }, function(e) {
                      showError(e);
@@ -1372,6 +1386,7 @@ $(document).ready(function(){
                     fillSelect(returnData, "#addTicketUser", "", "",
                                "firstname,lastname,email");
                     $("#addTicketUser").val(userid);
+                    $("#addTicketUser").select2();
                 },
                            function(e) {
                     showError(e);
@@ -1397,6 +1412,7 @@ $(document).ready(function(){
                         localStorage.setItem('add_user_techid', '');
                         $("#addTicketTechs").val(techid);
                     }
+                    $("#addTicketTechs").select2();
                 },
                                  function(e) {
                     showError(e);
@@ -1412,6 +1428,7 @@ $(document).ready(function(){
                     projects.done(
                         function(projectResults){
                             fillSelect(projectResults, "#ticketProject", "<option value='null' disabled selected>choose a project</option>");
+                            $("#ticketProject").select2();
                         }
                     );
                 }
@@ -1426,6 +1443,7 @@ $(document).ready(function(){
                             priorityInsert += "<option value="+prioritiesResults[b].id+">Priority: " + prioritiesResults[b].priority_level + " - " +prioritiesResults[b].name+"</option>";
                         }
                         $(priorityInsert).appendTo("#ticketPriority");
+                        $("#ticketPriority").select2();
                     }
                 );
 
@@ -1434,6 +1452,7 @@ $(document).ready(function(){
                 classes.done(
                     function(classResults){
                         fillClasses(classResults, "#classTicketOptions", "<option value=0 disabled selected>choose a class</option>");
+                        $("#classTicketOptions").select2();
                     });
 
                 // ticket Location_add_Ticket_V4
@@ -1441,6 +1460,7 @@ $(document).ready(function(){
                 location.done(
                     function(locationResults){
                         fillSelect(locationResults, "#ticketLocation", "<option value=0 disabled selected>choose a location</option>");
+                        $("#ticketLocation").select2();
                     });
                 
                   // ToDo Templates
