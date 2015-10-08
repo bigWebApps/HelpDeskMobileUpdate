@@ -291,7 +291,7 @@ var fastClicker = {
             if (localStorage.getItem('userRole') !== "tech") $(".TicketTabs").hide();
             var test = localStorage.getItem("ticketPage");
             this.tabnav(test ? test : "user");
-            $(document).on("click",".tabHeader",function(){
+            $(document).on("click touchstart",".tabHeader",function(){
 				ticketDetails.tabnav($(this));
 			});
 		},
