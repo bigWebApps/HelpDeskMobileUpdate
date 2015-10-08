@@ -9,10 +9,11 @@ var fastClicker = {
 	},
 
 	clickFast:function() {
-
+        if (window.FastClick){
 		window.addEventListener('load', function() {
 			FastClick.attach(document.body);
 		}, false);
+        }
 	}
 };
 
