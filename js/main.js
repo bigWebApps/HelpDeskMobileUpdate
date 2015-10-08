@@ -2830,6 +2830,10 @@ $(document).ready(function(){
 
         createQueuesList : function (parent, returnData, limit){
             // add queues to the queues list
+            if(!limit && (!returnData || returnData.length < 1)){
+                $(parent).html('<h2 class="noTicketMessage">No Queues</h2>');
+                return;
+            }
             var activeQueues=0;
             var textToInsert =  [],
                 length = returnData.length,
