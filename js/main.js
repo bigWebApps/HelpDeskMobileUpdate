@@ -1155,6 +1155,8 @@ $(document).ready(function(){
         addTicket:function() {
             $("#addTicketAccounts").empty();
             var accountset = localStorage.getItem('addAccountTicket');
+            var account = Number(localStorage.getItem('add_user_accountid')) || Number(localStorage.getItem("account_id")) || -1;
+            accountset  = accountset ? accountset : account; 
             localStorage.setItem('addAccountTicket', '');
             if(!isTech){
                 $("#istech").hide1();
@@ -1190,8 +1192,6 @@ $(document).ready(function(){
                      // get list of accounts add them to option select list
                      $("#addTicketAccounts").empty();
                      fillSelect(returnData, "#addTicketAccounts", "<option value=0 disabled selected>choose an account</option>");
-                     var account = Number(localStorage.getItem('add_user_accountid')) || Number(localStorage.getItem("account_id")) || -1;
-                     accountset  = accountset ? accountset : account; 
                      if (accountset){
                          localStorage.setItem('add_user_accountid', '');
                          $("#addTicketAccounts").val(accountset).trigger("change");
@@ -1228,7 +1228,7 @@ $(document).ready(function(){
                     userName = localStorage.getItem("userName");
 
                 $("#addTicketUser").append("<option value="+userid+" selected>"+userName+"</option>");
-                newTicket.getSearch("#addTicketUser", "users?account=-1");
+                newTicket.getSearch("#addTicketUser", "users?account="+accountset);
                 /*var users = getApi("users?limit=50&account=-1");
                 users.then(function(returnData){
                     //console.log(returnData);
