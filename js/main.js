@@ -547,6 +547,11 @@ $(document).ready(function(){
         minimumResultsForSearch: 8,
         width: "95%"
     };
+    
+    var nosearch = {   
+        minimumResultsForSearch: Infinity,
+        width: "95%"
+    };
 
     function fillSelect(returnData, element, initialValue, prefix, customValues, envelope_start, envelope_end)
     {
@@ -2109,6 +2114,8 @@ $(document).ready(function(){
                 else
                 {
                     //get accounts
+                    //newTicket.getSearch("#timeAccounts", "accounts".addUrlParam( "is_with_statistics","false"));
+                    
                     getApi("accounts?limit=300", {"is_with_statistics":false}).then(function(returnData) {
                         ////console.log(returnData);
                         $("#timeAccounts").empty();
@@ -2122,6 +2129,7 @@ $(document).ready(function(){
                         }
                         $(insert).appendTo("#timeAccounts");
                         $("#timeAccounts").val(account_id);
+                        $("#timeAccounts").select2(osearch);
                         //if (parseInt($("#timeAccounts").val()) !== account_id)
                         //    $("#timeAccounts").val(-1);
                         //reveal();
@@ -2132,6 +2140,7 @@ $(document).ready(function(){
                         console.log("fail @ time accounts");
                     }
                                                                                    );
+                    
 
                     $("#timeAccounts").on("change", function(){
                         //console.log(timeLog.task_type_id);

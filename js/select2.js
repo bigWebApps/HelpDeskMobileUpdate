@@ -1949,20 +1949,27 @@ S2.define('select2/selection/search',[
       this.$search.focus();
     }
   };
+    
+    var lastSearchInput = "";
+    Search.prototype.handleSearch = function () {
+        this.resizeSearch();
+        function isEmptyOrSpaces(str) {
+            return str === null || str.match(/^ *$/) !== null;
+        }
 
-  Search.prototype.handleSearch = function () {
-    this.resizeSearch();
+        if (!this._keyUpPrevented) {
+            var input = this.$search.val();
+            if (!isEmptyOrSpaces(lastSearchInput) || !isEmptyOrSpaces(input)) {
+                lastSearchInput = input;
+                this.trigger('query', {
+                    term: input
+                });
+            }
+        }
 
-    if (!this._keyUpPrevented) {
-      var input = this.$search.val();
+        this._keyUpPrevented = false;
+    };
 
-      this.trigger('query', {
-        term: input
-      });
-    }
-
-    this._keyUpPrevented = false;
-  };
 
   Search.prototype.searchRemoveChoice = function (decorated, item) {
     this.trigger('unselect', {
@@ -3338,7 +3345,7 @@ S2.define('select2/dropdown/attachBody',[
 
     if (newDirection == 'above' ||
       (isCurrentlyAbove && newDirection !== 'below')) {
-      css.top = container.top - dropdown.height;
+      css.top = container.top - dropdown.height - 17;
     }
 
     if (newDirection != null) {
