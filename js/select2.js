@@ -1451,7 +1451,7 @@ S2.define('select2/selection/single',[
     $selection.html(
       '<span class="select2-selection__rendered"></span>' +
       '<span class="select2-selection__arrow" role="presentation">' +
-        '<b role="presentation"></b>' +
+        '<li class="arrowDown ion-ios-arrow-down" style="padding-right: 0;"></li>' +
       '</span>'
     );
 
