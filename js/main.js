@@ -936,52 +936,6 @@ $(document).ready(function(){
         }
     };
 
-    // transfer current detailed ticket
-    var transferTicket = {
-        init:function() {
-            this.transfer();
-        },
-
-        transfer:function() {
-            $("#transfer").click(function(){
-                $('#loading').removeAttr('style');
-                $("#loading").show1();
-                $("#transfer").hide1();
-                $("#transferSelect").show1();
-
-                getApi("technicians?limit=200").then(function(returnData) {
-                    //console.log(returnData);
-                    // add techs to option select list
-                    fillSelect(returnData, "#transferTechs", "<option value=0 disabled selected> Choose Tech</option>", "", "firstname,lastname,email", "", "", nosearch);
-                    reveal();
-                },
-                                                     function(e) {
-                    showError(e);
-                    console.log("fail @ listTechs");
-                }
-                                                    );
-                // get value
-                $("#transferTechs").on("change", function(){
-                    var techId = $("#transferTechs").val();
-                    getApi('tickets/'+localStorage.getItem("ticketNumber"),{
-                        "action": "transfer",
-                        "note_text": " ",
-                        "tech_id": techId,
-                        "keep_attached": false
-
-
-                    }, 'PUT').then(function (d) {
-                        location.reload(false);
-                    },
-                                   function(e) {
-                        showError(e);
-                        console.log("fail @ transferTechs");
-                    });
-                });
-            });
-        }
-    };
-
     var addRecip = {
         init:function() {
             this.addEm();
@@ -2231,7 +2185,15 @@ $(document).ready(function(){
         init:function(){
             if (!isTech){ $(".tabs").hide();
                          $("#closeu").show(); }
-            else { $("#closeu").hide();}
+            else { $("#closeu").hide();
+                  $("#transfer").click(function(){
+                      $('.TicketTabs > ul > li, .tabs > ul > li').css('color','rgba(255, 255, 255, 0.55)');
+                      $(".tabpage").hide();
+                      $("li.tabHeader[data-id=info]").css('color','#ffffff');
+                      $("#tabpage_info").show();
+                      userMessage.showMessage(false, "Please update Tech in Info section!");
+                  });
+                }
 
             this.showTicket();
             this.updateTicket();
@@ -2243,7 +2205,8 @@ $(document).ready(function(){
                     ticketLevel = $("#ticketLevel").val(),
                     ticketPriority = $("#ticketPriority").val(),
                     ticketProject = $("#ticketProject").val(),
-                    ticketLocation = $("#ticketLocation").val();
+                    ticketLocation = $("#ticketLocation").val(),
+                    ticketTech = $("#ticketTechs").val();
 
                 var response = {
                     //"account_id" : ticketAccount,
@@ -2252,7 +2215,8 @@ $(document).ready(function(){
                     "priority_id" : ticketPriority,
                     "project_id" : ticketProject,
                     "location_id" : ticketLocation,
-                    "account_id": $("#inputAccountId").val()
+                    "account_id": $("#inputAccountId").val(),
+                    "tech_id": ticketTech
                 };
 
                 getApi('tickets/' + localStorage.getItem('ticketId'), response, 'PUT').then(function(results){
@@ -2327,12 +2291,34 @@ $(document).ready(function(){
                         $("#ticketSLA").html("SLA: "+getDateTime(returnData.sla_complete_date));
                     }
                     var ticketTech = returnData.tech_email;
+                    var techid = returnData.tech_id;
                     //console.log(ticketTech);
                     if(ticketTech == localStorage.getItem('userName')){
                         $('#pickUp').hide();
                     } 
-                    //$("ul").find("[data-id='info']").click(function(){
+                    
+                    //add comments (ticketLogs) to the page
+                    var logslen = returnData.ticketlogs.length;
+                    var files = returnData.attachments || [];
+                    //sort files by filename to avoid wrong replace
+                    files.sort(function(a, b){
+                        return b.name.length - a.name.length;
+                    });
+                    $(".orginalMessageContainer").empty();
+                    detailedTicket.createLogs([returnData.ticketlogs.shift()], ".orginalMessageContainer", files);
 
+                    // add the lastest comment to the top of the comments list
+                    if (logslen > 1){
+                        $("#comments").empty();
+                        detailedTicket.createLogs(returnData.ticketlogs, "#comments", files);
+
+                    }
+
+                    reveal();
+                    
+                    if (!isTech)
+                        return;
+                    
                     var classes = getApi('classes');
                     var priorities = getApi('priorities');
 
@@ -2364,13 +2350,40 @@ $(document).ready(function(){
                                 $("#ticketPriority").parent().hide1();
                                 return;
                             }
-                            fillSelect(prioritiesResults, "#ticketPriority");
+                            fillSelect(prioritiesResults, "#ticketPriority", "", "Priority: ");
                             $("#ticketPriority").val(returnData.priority_id).trigger("change");
                         }
                     );
+                    
                     $("#ticketTechs").empty();
-                    // add select options to tech Option box
-                    fillSelect(returnData.technicians, "#ticketTechs", "", "", "user_fullname", "", "", nosearch);
+                    /* var name = "";
+                        if (returnData.name)
+                            name = returnData.name + " ";
+                        if (returnData.tech_firstname)
+                            name += returnData.tech_firstname + " ";
+                        if (returnData.tech_lastname)
+                            name += returnData.tech_lastname + " ";
+                        if (returnData.tech_email && returnData.tech_email.indexOf("@") > 0){
+                            if (!name.trim())
+                                name = returnData.tech_email;
+                            else
+                                name += " (" + returnData.tech_email + ")";
+                        }
+                    */
+                    getApi("technicians?limit=200").then(function(returnData) {
+                        //console.log(returnData);
+                        // add techs to option select list
+                        //"<option value="+returnData.tech_id +" selected>Tech: "+name+"</option>"
+                        fillSelect(returnData, "#ticketTechs", "", "Tech: ", "firstname,lastname,email", "", "", nosearch);
+                        $("#ticketTechs").val(techid).trigger("change");
+                        reveal();
+                    },
+                                                         function(e) {
+                        showError(e);
+                        console.log("fail @ listTechs");
+                    }
+                                                        );
+                    
                     $("#ticketLocation").empty();
                     if (isLocation){
                         getApi('locations?limit=500&account='+returnData.account_id).done(
@@ -2396,32 +2409,13 @@ $(document).ready(function(){
                         var projects = getApi('projects');
                         projects.done(
                             function(projectResults){
-                                if (fillSelect(projectResults, "#ticketProject", returnData.project_name == "" ? "<option value='null' disabled selected>Project</option>" : "") >0){
+                                if (fillSelect(projectResults, "#ticketProject", (returnData.project_name == "" ? "<option value='null' disabled selected>Project</option>" : "")) >0){
                                     if (returnData.project_name != "") $("#ticketProject").val(returnData.project_id).trigger("change");
                                 }
                             }
                         );
                     }
                     //});
-
-                    //add comments (ticketLogs) to the page
-                    var logslen = returnData.ticketlogs.length;
-                    var files = returnData.attachments || [];
-                    //sort files by filename to avoid wrong replace
-                    files.sort(function(a, b){
-                        return b.name.length - a.name.length;
-                    });
-                    $(".orginalMessageContainer").empty();
-                    detailedTicket.createLogs([returnData.ticketlogs.shift()], ".orginalMessageContainer", files);
-
-                    // add the lastest comment to the top of the comments list
-                    if (logslen > 1){
-                        $("#comments").empty();
-                        detailedTicket.createLogs(returnData.ticketlogs, "#comments", files);
-
-                    }
-
-                    reveal();
                 },
                 function(e) {
                     //showError(e);
@@ -3953,7 +3947,6 @@ $(document).ready(function(){
         {
             detailedTicket.init();
             pickUpTicket.init();
-            transferTicket.init();
             closeTicket.init();
             //addTime.init();
             postComment.init();
