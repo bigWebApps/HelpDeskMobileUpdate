@@ -2191,7 +2191,10 @@ $(document).ready(function(){
                       $(".tabpage").hide();
                       $("li.tabHeader[data-id=info]").css('color','#ffffff');
                       $("#tabpage_info").show();
-                      userMessage.showMessage(false, "New functionality! Please update Tech in Info section!");
+                      $("#ticketTechs").parent().css("background-color","#52a552");
+                      userMessage.showMessage(true, "Warning! Please update Tech in Info section!", function(){
+                          $("#ticketTechs").parent().css("background-color","#fca83f");}
+                                             );                           
                   });
                 }
 
