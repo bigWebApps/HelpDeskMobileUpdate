@@ -2191,7 +2191,7 @@ $(document).ready(function(){
                       $(".tabpage").hide();
                       $("li.tabHeader[data-id=info]").css('color','#ffffff');
                       $("#tabpage_info").show();
-                      userMessage.showMessage(false, "Please update Tech in Info section!");
+                      userMessage.showMessage(false, "New functionality! Please update Tech in Info section!");
                   });
                 }
 
