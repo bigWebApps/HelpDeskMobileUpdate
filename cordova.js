@@ -1048,13 +1048,10 @@ function pokeNativeViaIframe() {
     } else {
         var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
         // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
-        var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+        var isDesktopSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0 && !navigator.userAgent.match(/iphone|ipad|ipod/i);
         // At least Safari 3+: "[object HTMLElementConstructor]"
         var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
-        var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
-        var isChrome = !!window.chrome && !isOpera; 
-        //if (isOpera || isIE || isFirefox || isChrome)
-        //    return;
+        if (!isOpera && !isDesktopSafari && !isIE){
         // Check if they've removed it from the DOM, and put it back if so.
         if (execIframe && execIframe.contentWindow) {
             execIframe.contentWindow.location = 'gap://ready';
@@ -1063,6 +1060,7 @@ function pokeNativeViaIframe() {
             execIframe.style.display = 'none';
             execIframe.src = 'gap://ready';
             document.body.appendChild(execIframe);
+        }
         }
         // Use a timer to protect against iframe being unloaded during the poke (CB-7735).
         // This makes the bridge ~ 7% slower, but works around the poke getting lost
