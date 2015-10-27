@@ -1096,12 +1096,15 @@ $(document).ready(function(){
         },
         getSearch: function(element, method, parameters, default_id, default_name){
             //method = "technicians";
-            var limit = 50;
+            var limit = 10;
             var records = getApi((method + parameters).addUrlParam("limit", ""+limit));
             var count = 0;
+            var selectname = "Default";
+            if (parameters.length)
+            selectname = parameters.indexOf("role=tech")>0 ? "tech" : method.toLowerCase().slice(0, -1);
             records.done(
                 function(results){
-                    var initial = !default_id ? ("<option value=0 disabled selected>choose "+method.toLowerCase().slice(0, -1)+"</option>") : "";
+                    var initial = !default_id ? ("<option value=0 disabled selected>choose "+selectname+"</option>") : "";
                     count = fillSelect(results, element, initial, "", "name,firstname,lastname,email", "", "", "", true);
 
                     if (count < limit)
@@ -1164,6 +1167,8 @@ $(document).ready(function(){
                         },
                         minimumInputLength: 0
                     });
+                    if (default_id)
+                        $(""+element).val(default_id).trigger("change");
                     reveal();
                 });
         },
@@ -1231,24 +1236,13 @@ $(document).ready(function(){
 
                 // after an account is choosed it get a list of technicians
                 // list of Tech
-                var technicians = getApi("technicians?limit=200");
-                technicians.then(function(returnData){
-                    //console.log(returnData);
-                    // add techs to option select list
-                    fillSelect(returnData, "#addTicketTechs",
-                               "<option value=0 disabled selected>choose a tech</option>", "",
-                               "firstname,lastname,email");
-                    var techid = localStorage.getItem('add_user_techid');
-                    if (techid) {
-                        localStorage.setItem('add_user_techid', '');
-                        $("#addTicketTechs").val(techid).trigger("change");
-                    }
-                },
-                                 function(e) {
-                    showError(e);
-                    console.log("fail @ Ticket Techs");
+                var techid = localStorage.getItem('add_user_techid');
+                var techname = localStorage.getItem('add_user_techname');
+                if (techid) {
+                    localStorage.setItem('add_user_techid', '');
+                    localStorage.setItem('add_user_techname', '');
                 }
-                                );
+                newTicket.getSearch("#addTicketTechs", "users", "?role=tech&account="+accountset, techid, techname);
                 // after techs are choosen then get a list of classes
                 var classes = getApi('classes');
                 classes.done(
@@ -2294,34 +2288,12 @@ $(document).ready(function(){
                         $("#ticketSLA").html("SLA: "+getDateTime(returnData.sla_complete_date));
                     }
                     var ticketTech = returnData.tech_email;
-                    var techid = returnData.tech_id;
                     //console.log(ticketTech);
                     if(ticketTech == localStorage.getItem('userName')){
                         $('#pickUp').hide();
                     } 
-                    
-                    //add comments (ticketLogs) to the page
-                    var logslen = returnData.ticketlogs.length;
-                    var files = returnData.attachments || [];
-                    //sort files by filename to avoid wrong replace
-                    files.sort(function(a, b){
-                        return b.name.length - a.name.length;
-                    });
-                    $(".orginalMessageContainer").empty();
-                    detailedTicket.createLogs([returnData.ticketlogs.shift()], ".orginalMessageContainer", files);
+                    //$("ul").find("[data-id='info']").click(function(){
 
-                    // add the lastest comment to the top of the comments list
-                    if (logslen > 1){
-                        $("#comments").empty();
-                        detailedTicket.createLogs(returnData.ticketlogs, "#comments", files);
-
-                    }
-
-                    reveal();
-                    
-                    if (!isTech)
-                        return;
-                    
                     var classes = getApi('classes');
                     var priorities = getApi('priorities');
 
@@ -2353,40 +2325,13 @@ $(document).ready(function(){
                                 $("#ticketPriority").parent().hide1();
                                 return;
                             }
-                            fillSelect(prioritiesResults, "#ticketPriority", "", "Priority: ");
+                            fillSelect(prioritiesResults, "#ticketPriority");
                             $("#ticketPriority").val(returnData.priority_id).trigger("change");
                         }
                     );
-                    
                     $("#ticketTechs").empty();
-                    /* var name = "";
-                        if (returnData.name)
-                            name = returnData.name + " ";
-                        if (returnData.tech_firstname)
-                            name += returnData.tech_firstname + " ";
-                        if (returnData.tech_lastname)
-                            name += returnData.tech_lastname + " ";
-                        if (returnData.tech_email && returnData.tech_email.indexOf("@") > 0){
-                            if (!name.trim())
-                                name = returnData.tech_email;
-                            else
-                                name += " (" + returnData.tech_email + ")";
-                        }
-                    */
-                    getApi("technicians?limit=200").then(function(returnData) {
-                        //console.log(returnData);
-                        // add techs to option select list
-                        //"<option value="+returnData.tech_id +" selected>Tech: "+name+"</option>"
-                        fillSelect(returnData, "#ticketTechs", "", "Tech: ", "firstname,lastname,email", "", "", nosearch);
-                        $("#ticketTechs").val(techid).trigger("change");
-                        reveal();
-                    },
-                                                         function(e) {
-                        showError(e);
-                        console.log("fail @ listTechs");
-                    }
-                                                        );
-                    
+                    // add select options to tech Option box
+                    fillSelect(returnData.technicians, "#ticketTechs", "", "", "user_fullname", "", "", nosearch);
                     $("#ticketLocation").empty();
                     if (isLocation){
                         getApi('locations?limit=500&account='+returnData.account_id).done(
@@ -2412,13 +2357,32 @@ $(document).ready(function(){
                         var projects = getApi('projects');
                         projects.done(
                             function(projectResults){
-                                if (fillSelect(projectResults, "#ticketProject", (returnData.project_name == "" ? "<option value='null' disabled selected>Project</option>" : "")) >0){
+                                if (fillSelect(projectResults, "#ticketProject", returnData.project_name == "" ? "<option value='null' disabled selected>Project</option>" : "") >0){
                                     if (returnData.project_name != "") $("#ticketProject").val(returnData.project_id).trigger("change");
                                 }
                             }
                         );
                     }
                     //});
+
+                    //add comments (ticketLogs) to the page
+                    var logslen = returnData.ticketlogs.length;
+                    var files = returnData.attachments || [];
+                    //sort files by filename to avoid wrong replace
+                    files.sort(function(a, b){
+                        return b.name.length - a.name.length;
+                    });
+                    $(".orginalMessageContainer").empty();
+                    detailedTicket.createLogs([returnData.ticketlogs.shift()], ".orginalMessageContainer", files);
+
+                    // add the lastest comment to the top of the comments list
+                    if (logslen > 1){
+                        $("#comments").empty();
+                        detailedTicket.createLogs(returnData.ticketlogs, "#comments", files);
+
+                    }
+
+                    reveal();
                 },
                 function(e) {
                     //showError(e);
