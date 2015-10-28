@@ -2688,6 +2688,7 @@ $(document).ready(function(){
                 featureList2 = filterList("techContainer", searchItem);
             }
             setTimeout(function(){
+                $("#loading").show1();
                 getApi("tickets?status=open&limit=100&role=tech").then(function(returnData) {
                     //add tickets as tech to as tech list
                     ticketList.createTicketsList(returnData, "#techContainer", cacheName1);
