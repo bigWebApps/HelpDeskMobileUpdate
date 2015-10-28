@@ -2671,7 +2671,6 @@ $(document).ready(function(){
         },
         //get tickets as tech
         techTickets:function(searchItem) {
-            $("#loading").show1();
             //$("#techContainer, #optionsConainer, #allContainer, #userContainer").hide();
             var cacheName1 = "tech",
                 retrievedObject = localStorage.getItem(cacheName1 +"tickets");
