@@ -1120,36 +1120,30 @@ $(document).ready(function(){
         getSearch: function(element, method, parameters, default_id, default_name, noloading){
             if (!noloading)
                 $("#loading").show1();
-            var limit = 50;
-            var records = getApi((method + parameters).addUrlParam("limit", limit));
-            var count = 0;
-            var selectname = "Default";
-            var istech = parameters.indexOf("role=tech")>0;
-            if (!istech && method=="users"){
+            if (method == "users"){
                 newTicket.getSearchAjax(element, method, parameters, default_id, default_name);
                 return;
             }
-            if (parameters.length)
-            selectname = istech ? "tech" : method.toLowerCase().slice(0, -1);
+            var limit = 30;
+            var records = getApi((method + parameters).addUrlParam("limit", limit));
+            var count = 0;
             records.done(
                 function(results){
-                    var initial = !default_id ? ("<option value=0 disabled selected>choose "+selectname+"</option>") : "";
-                    count = fillSelect(results, element, initial, "", "name,firstname,lastname,email", "", "", "", true);
-
+                    count = results.length;
                     if (count < limit)
                     {   
-                        $(""+element).select2(osearch);
+                        var initial = !default_id ? ("<option value=0 disabled selected>choose "+method.toLowerCase().slice(0, -1)+"</option>") : "";
+                        fillSelect(results, element, initial, "", "name,firstname,lastname,email");
                         if (default_id)
                             $(""+element).val(default_id).trigger("change");
-                        //reveal();
-                        return;
                     }
-                    newTicket.getSearchAjax(element, method, parameters, default_id, default_name);
+                    else
+                        newTicket.getSearchAjax(element, method, parameters, default_id, default_name);
                 });
         },
         getSearchAjax: function(element, method, parameters, default_id, default_name){
-            if (default_id)
-                        $(""+element).append("<option value="+default_id+" selected>"+default_name +"</option>");
+            var initial = !default_id ? ("<option value=0 disabled selected>choose "+method.toLowerCase().slice(0, -1)+"</option>") : "<option value="+default_id+" selected>"+default_name +"</option>";
+                    $(""+element).append(initial);
                     //reveal();
                     //var symbolArray = [{id:1, text: 'AB1C'},{id:2, text:'DEF'}, {id:3, text: 'GHI'}];
                     $(element).select2({
@@ -2110,7 +2104,7 @@ $(document).ready(function(){
                     );
                     $("#ticketTechs").empty();
                     // add select options to tech Option box
-                    newTicket.getSearch("#ticketTechs", "users", "?role=tech", techid, ticketTech, true);
+                    newTicket.getSearch("#ticketTechs", "technicians", "", techid, ticketTech, true);
                     $("#ticketLocation").empty();
                     if (isLocation){
                         getApi('locations?limit=500&account='+returnData.account_id).done(
