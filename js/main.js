@@ -1253,7 +1253,7 @@ $(document).ready(function(){
                     localStorage.setItem('add_user_techid', '');
                     localStorage.setItem('add_user_techname', '');
                 }
-                newTicket.getSearch("#addTicketTechs", "users", "?role=tech&account="+accountset, techid, techname);
+                newTicket.getSearch("#addTicketTechs", "technicians", "", techid, techname);
                 // after techs are choosen then get a list of classes
                 var classes = getApi('classes');
                 classes.done(
