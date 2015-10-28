@@ -2042,13 +2042,36 @@ $(document).ready(function(){
                     {
                         $("#ticketSLA").html("SLA: "+getDateTime(returnData.sla_complete_date));
                     }
-                    var ticketTech = returnData.tech_email;
+                    
+                    //add comments (ticketLogs) to the page
+                    var logslen = returnData.ticketlogs.length;
+                    var files = returnData.attachments || [];
+                    //sort files by filename to avoid wrong replace
+                    files.sort(function(a, b){
+                        return b.name.length - a.name.length;
+                    });
+                    $(".orginalMessageContainer").empty();
+                    detailedTicket.createLogs([returnData.ticketlogs.shift()], ".orginalMessageContainer", files);
+
+                    // add the lastest comment to the top of the comments list
+                    if (logslen > 1){
+                        $("#comments").empty();
+                        detailedTicket.createLogs(returnData.ticketlogs, "#comments", files);
+
+                    }
+                    
+                    reveal();
+
+                    if (!isTech)
+                        return; 
+                    
+                    var ticketTech = getFullName(returnData.tech_firstname, returnData.tech_lastname,  returnData.tech_email);
+                    var techid = returnData.tech_id;
                     //console.log(ticketTech);
                     if(ticketTech == localStorage.getItem('userName')){
                         $('#pickUp').hide();
                     } 
-                    //$("ul").find("[data-id='info']").click(function(){
-
+                    
                     var classes = getApi('classes');
                     var priorities = getApi('priorities');
 
@@ -2080,13 +2103,13 @@ $(document).ready(function(){
                                 $("#ticketPriority").parent().hide1();
                                 return;
                             }
-                            fillSelect(prioritiesResults, "#ticketPriority");
+                            fillSelect(prioritiesResults, "#ticketPriority", "", "Priority: ");
                             $("#ticketPriority").val(returnData.priority_id).trigger("change");
                         }
                     );
                     $("#ticketTechs").empty();
                     // add select options to tech Option box
-                    fillSelect(returnData.technicians, "#ticketTechs", "", "", "user_fullname", "", "", nosearch);
+                    newTicket.getSearch("#ticketTechs", "users", "?role=tech", techid, ticketTech);
                     $("#ticketLocation").empty();
                     if (isLocation){
                         getApi('locations?limit=500&account='+returnData.account_id).done(
@@ -2118,26 +2141,7 @@ $(document).ready(function(){
                             }
                         );
                     }
-                    //});
 
-                    //add comments (ticketLogs) to the page
-                    var logslen = returnData.ticketlogs.length;
-                    var files = returnData.attachments || [];
-                    //sort files by filename to avoid wrong replace
-                    files.sort(function(a, b){
-                        return b.name.length - a.name.length;
-                    });
-                    $(".orginalMessageContainer").empty();
-                    detailedTicket.createLogs([returnData.ticketlogs.shift()], ".orginalMessageContainer", files);
-
-                    // add the lastest comment to the top of the comments list
-                    if (logslen > 1){
-                        $("#comments").empty();
-                        detailedTicket.createLogs(returnData.ticketlogs, "#comments", files);
-
-                    }
-
-                    reveal();
                 },
                 function(e) {
                     //showError(e);
@@ -2670,6 +2674,7 @@ $(document).ready(function(){
         },
         //get tickets as tech
         techTickets:function(searchItem) {
+            $("#loading").show1();
             //$("#techContainer, #optionsConainer, #allContainer, #userContainer").hide();
             var cacheName1 = "tech",
                 retrievedObject = localStorage.getItem(cacheName1 +"tickets");
@@ -2719,7 +2724,6 @@ $(document).ready(function(){
                 getApi("tickets?status=allopen&limit=100&query=all").then(function(returnData) {
                     ticketList.createTicketsList(returnData, "#allContainer", cacheName1);
                     featureList3 = filterList("allContainer");
-                    reveal();
 
                 },
                                                                           function(e) {
