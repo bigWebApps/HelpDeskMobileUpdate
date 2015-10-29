@@ -18,6 +18,7 @@ function getDateTime(date)
     return new Date(date).dateFormat(getDateTimeFormat());   
 }
 
+//get the full name of the following options:firstname, lastname, email,name
 function getFullName(firstname,lastname,email,name) {
     var fname = "";
                                     if (name)
@@ -321,7 +322,7 @@ function fullapplink (classn, urlString){
 }
 
 
-
+//HTML encode
 function htmlEscape(str) {
     return String(str)
         .replace(/&/g, '&amp;amp;')
@@ -338,6 +339,7 @@ function htmlEscape(str) {
     ;
 }
 
+//HTML decode
 function symbolEscape(str) {
     return String(str)
     //.replace(/&lt;/g, '<')
@@ -462,7 +464,7 @@ var FileUrlHelper = {
         }
         return note;
     },
-
+//get file of the folllowing options: file, name
     getFileLink : function (file,name)
     {
         var img ="";
@@ -470,9 +472,6 @@ var FileUrlHelper = {
             img = "<img class=\"attachment\" src=\"" + file + "\">";
         else
             img = "<i class='ion-android-document ion-3x ionColor'></i> &nbsp;" + decodeURIComponent(file.split("/").slice(-1)) + "<p></p>";
-
-
-
         return "<p/><a class=\"comment_image_link\"" + 
             (isPhonegap ? (" href=# onclick='openURL(\"" +file + "\")'>"+img+"</a>") :
              (" target=\"_blank\" href=\"" +file + "\">"+img+"</a>"));
@@ -485,6 +484,7 @@ var featureList3;
 var featureList4;
 var featureList5;
 
+//search in the list
 function filterList(listClass, init_value, value_names){
     $('body').attr('id', 'search_wrap');
     if (!value_names)
@@ -699,6 +699,7 @@ $(document).ready(function(){
     }
 
     // user login
+    //#login.html
     var UserLogin = {
         init: function () {
             if (!isStorage())
@@ -802,6 +803,7 @@ $(document).ready(function(){
     };
 
     // org signup
+    //#signup.html
     var OrgSignup = {
         init: function () {
             var userName = localStorage.getItem('userName');
@@ -816,6 +818,7 @@ $(document).ready(function(){
             $("#is_force_registration").prop("checked", false);
             reveal();   
         },
+        //add org
         add: function () {
             var name = $("#name").val();
             var email = $("#email").val();
@@ -891,6 +894,7 @@ $(document).ready(function(){
     };
 
     //show closed tickets
+    //#closedTickets.html
     var closedTickets = {
         init:function() {
             this.showClosedTickets();
@@ -937,6 +941,7 @@ $(document).ready(function(){
     };
 
     // pick up current detailed ticket
+    //#ticket_detail.html
     var pickUpTicket = {
         init:function() {
             this.pick();
@@ -980,6 +985,7 @@ $(document).ready(function(){
     };
 
     // close current detailed ticket
+    //#ticket_detail.html
     var closeTicket = {
         init:function() {
             this.closeIt();
@@ -1083,6 +1089,7 @@ $(document).ready(function(){
     };
 
     // create a new ticket
+    //#add_tickets.html
     var newTicket = {
         init:function() {
             var storeUser = function (isTech)
@@ -1311,6 +1318,7 @@ $(document).ready(function(){
     };
 
     // post a comment to a ticket on the ticket details page
+    //#ticket_detail.html
     var postComment = {
         init:function(){
             this.sendComment();
@@ -1343,6 +1351,7 @@ $(document).ready(function(){
     };
 
     // Ajax calls for semi-universal search bar
+    //#dashboard.html
     var search = {
         init:function(){
             this.universalSearch();
@@ -1374,6 +1383,7 @@ $(document).ready(function(){
     };
 
     // add time to an account
+    //#addExpence.html
     var addExpence = {
         init:function(ticket_id){
             this.addExpence(getParameterByName("ticket"));
@@ -1449,6 +1459,7 @@ $(document).ready(function(){
 
 
     // adjustment at invoice
+    //#adjustment.html
     var Adjust = {
         init:function(){
             this.Adjustment();
@@ -1488,18 +1499,8 @@ $(document).ready(function(){
         }
     };
 
-
-
-
-
-
-
-
-
-
-
-
     // add user to an account
+    //#add_user.html
     var addUser = {
         init:function(){
             $(".innerCircle").click(function(){
@@ -1576,6 +1577,9 @@ $(document).ready(function(){
     };
 
     // add time to an account
+    //#edit_time.html
+    //#add_time.html
+    //#addTicketTime.html
     var addTime = {
         init:function(isEdit){
             this.addpicker();
@@ -1926,7 +1930,7 @@ $(document).ready(function(){
     };
 
     // needed methods to propogate a ticket detailed page
-
+//#ticket_detail.html
     var detailedTicket = {
         init:function(){
             if (!isTech){ $(".tabs").hide();
@@ -2176,6 +2180,7 @@ $(document).ready(function(){
     };
 
     //get info for a specific invoice
+    //#invoice.html
     var detailedInvoice = {
         init:function(){
             $("#loading").show1();
@@ -2399,6 +2404,8 @@ $(document).ready(function(){
     };
 
     // get a list of invoices both for a specific account as well as a complete list of invoices
+    //#unInvoice_List.html
+    //#Invoice_List.html
     var invoiceList = {
         init:function(is_unbilled){
             $("#loading").show1();
@@ -2459,6 +2466,7 @@ $(document).ready(function(){
     };
 
     // list tickets of the queue
+    //#queueTickets.html
     var getQueueTickets = {
         init:function() {
             $(".title").html("Tickets @ " + localStorage.getItem("currentQueueName") + " Queue");
@@ -2502,6 +2510,7 @@ $(document).ready(function(){
     };
 
     // get complete queue list for the orginization for the Queues list page
+    //#Queues.html
     var getQueues = {
         init:function(parent, limit) {
             if (parent) 
@@ -2592,6 +2601,7 @@ $(document).ready(function(){
     };
 
     // Ajax calls to get open tickets for the app user, tickets include (as tech, as user, as alt tech, all tickets)
+    //#ticket_list.html
     var ticketList = {
         init:function() {
             var tab = getParameterByName('tab');
@@ -2790,6 +2800,8 @@ $(document).ready(function(){
     };
 
     //get a complete list of accounts attached to the orginizations
+    //#Account_List.html
+    //#dashboard.html (active list of account list)
     var accountList = {
         init:function(parent, limit) {
             $(document).on("click",'.tableRows, .listedAccount', function(){
@@ -2889,6 +2901,7 @@ $(document).ready(function(){
     });
 
     //expenses
+    //#expen.html
     var expenses = {
         init:function() {
             this.getLogs();
@@ -2967,6 +2980,7 @@ $(document).ready(function(){
 
 
     // get complete list of timelogs for the orginization
+    //#timelog.html
     var timeLogs = {
         init:function() {
             this.getLogs();
@@ -3047,6 +3061,7 @@ $(document).ready(function(){
 
 
     // get complete list of todos 
+    //#todos.html
     var todos = {
         init:function() {
             this.getTodoList();
@@ -3107,6 +3122,7 @@ $(document).ready(function(){
 
 
     // calls and methods to propagate the account details page
+    //#account_details.html
     var accountDetailsPageSetup = {
         init:function() {
             var ticketAccount = localStorage.getItem('DetailedAccount');
@@ -3212,6 +3228,7 @@ $(document).ready(function(){
     };
 
     // get timeLogs for a specific account
+    //#accountTimes.html
     var accountTimeLogs = {
         init:function(){
             $("#addTimeAccount").click(function(){
@@ -3426,6 +3443,7 @@ $(document).ready(function(){
     };
 
     // organization Ajax call
+    //#org.html
     var org = {
         init: function () {
             $('.instSelect').hide();
