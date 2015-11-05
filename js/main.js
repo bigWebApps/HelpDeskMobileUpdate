@@ -1146,10 +1146,13 @@ $(document).ready(function(){
                     count = results.length;
                     if (count < limit)
                     {   
-                        var initial = !default_id ? ("<option value=0 disabled selected>choose "+method.toLowerCase().slice(0, -1)+"</option>") : "";
+                        var initial = "<option value=0 disabled>choose "+method.toLowerCase().slice(0, -1)+"</option>";
+                        if (default_id && !$.grep(results, function(el){
+                                return el.id === default_id
+                            }).length)
+                                initial += "<option value="+default_id+" selected>"+default_name+"</option>"
                         fillSelect(results, element, initial, "", "name,firstname,lastname,email");
-                        if (default_id)
-                            $(""+element).val(default_id).trigger("change");
+                        $(""+element).val(default_id).trigger("change");
                     }
                     else
                         newTicket.getSearchAjax(element, method, parameters, default_id, default_name);
@@ -1201,13 +1204,13 @@ $(document).ready(function(){
             if (default_id)
                 $(""+element).val(default_id).trigger("change");
         },
-        getLocations: function(account){
+        getLocations: function(account, default_id, def_name, noloading){
             if (!isLocation){
                 $("#ticket_Location").parent().hide1();
                 return;
             }
             $("#ticket_Location").empty();
-            newTicket.getSearch("#ticket_Location", "locations", "?account="+account);           
+            newTicket.getSearch("#ticket_Location", "locations", "?account="+account, default_id, def_name, noloading);           
         },
         addTicket:function() {
             $("#timeAccounts").empty();
@@ -2136,21 +2139,7 @@ $(document).ready(function(){
                     $("#ticketTechs").empty();
                     // add select options to tech Option box
                     newTicket.getSearch("#ticketTechs", "technicians", "", techid, ticketTech, true);
-                    $("#ticketLocation").empty();
-                    if (isLocation){
-                        getApi('locations?limit=500&account='+returnData.account_id).done(
-                            function(locationResults){
-                                //Init ticket class if not changed
-                                selectedEditlocation = returnData.location_id;
-                                fillSelect(locationResults, "#ticketLocation", "<option disabled=disabled value=0>Choose location</option>");
-                                $("#ticketLocation").val(returnData.location_id).trigger("change");
-
-                            }); 
-                    }
-                    else
-                        $("#location").hide1();
-
-
+                    newTicket.getLocations(returnData.account_id, returnData.location_id, returnData.location_name, true);
 
                     // $("#location").remove();
 

@@ -4355,8 +4355,8 @@
                     if (this.hasFocus()) {
                         return;
                     }
-                    //this.$container.addClass('select2-container--focus');
-                    //this.trigger('focus', {});
+                    this.$container.addClass('select2-container--focus');
+                    this.trigger('focus', {});
                 };
 
                 Select2.prototype.enable = function (args) {
