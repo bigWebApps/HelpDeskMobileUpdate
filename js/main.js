@@ -1146,12 +1146,13 @@ $(document).ready(function(){
                     count = results.length;
                     if (count < limit)
                     {   
-                        var initial = "<option value=0 disabled>choose "+method.toLowerCase().slice(0, -1)+"</option>";
+                        var initial = "<option value=0 disabled "+(default_id ? "" : "selected ") + ">choose "+method.toLowerCase().slice(0, -1)+"</option>";
                         if (default_id && !$.grep(results, function(el){
                                 return el.id === default_id
                             }).length)
                                 initial += "<option value="+default_id+" selected>"+default_name+"</option>"
                         fillSelect(results, element, initial, "", "name,firstname,lastname,email");
+                        if (default_id)
                         $(""+element).val(default_id).trigger("change");
                     }
                     else
@@ -1639,7 +1640,7 @@ $(document).ready(function(){
             task_type_id = task_type_id || 0; 
             //$("#loading").show();
             $("#taskTypes").empty();
-            $("<option value=0>choose a task type</option>").appendTo("#taskTypes");
+            $("<option value=0 selected disabled>choose a task type</option>").appendTo("#taskTypes");
             //get task types
             var taskTypes = getApi("task_types", data);
             taskTypes.then(
@@ -1648,11 +1649,9 @@ $(document).ready(function(){
                     if (returnData.length > 0){
                         $("#taskTypes").empty();
                         // add task types to list
-                        fillSelect(returnData, "#taskTypes", "<option value=0>choose a task type</option>");
+                        fillSelect(returnData, "#taskTypes", "<option value=0 selected disabled>choose a task type</option>");
                         if (task_type_id > 0)
                             $("#taskTypes").val(task_type_id).trigger("change");
-                        else
-                            $("#taskTypes").prop("selectedIndex",1).trigger("change");
                     }
                     if (!$("#timeTicket").length)
                         reveal();
