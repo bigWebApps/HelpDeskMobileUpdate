@@ -1946,7 +1946,7 @@
 
                     this.resizeSearch();
                     if (searchHadFocus) {
-                        this.$search.focus();
+                        //this.$search.focus();
                     }
                 };
 
@@ -2758,7 +2758,9 @@
                         // Replace the search term if we have the search box
                         if (this.$search.length) {
                             this.$search.val(tokenData.term);
-                            this.$search.focus();
+                            console.log(2763);
+                            console.log(this.$search);
+                            //this.$search.focus();
                         }
 
                         params.term = tokenData.term;
@@ -2998,6 +3000,8 @@
                     });
 
                     container.on('open', function () {
+                        if (!self.options.options.ajax)
+                            return;
                         self.$search.attr('tabindex', 0);
 
                         self.$search.focus();
@@ -4351,9 +4355,8 @@
                     if (this.hasFocus()) {
                         return;
                     }
-
-                    this.$container.addClass('select2-container--focus');
-                    this.trigger('focus', {});
+                    //this.$container.addClass('select2-container--focus');
+                    //this.trigger('focus', {});
                 };
 
                 Select2.prototype.enable = function (args) {
