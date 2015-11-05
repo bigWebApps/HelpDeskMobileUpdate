@@ -1955,6 +1955,7 @@ $(document).ready(function(){
                       $(".tabpage").hide();
                       $("li.tabHeader[data-id=info]").css('color','#ffffff');
                       $("#tabpage_info").show();
+                      $("html, body").animate({ scrollTop: $(document).height() }, 1000);
                       $("#ticketTechs").parent().addClass("selected");
                       $(".updateButton").html("Transfer");
                       userMessage.showMessage(true, "Warning! Please update Tech in Info section!");                           
