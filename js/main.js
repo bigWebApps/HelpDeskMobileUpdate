@@ -58,7 +58,8 @@ var isTech = false,
     isTravelCosts = true,
     isInvoice = true,
     is_MultipleOrgInst = true,
-    isLimitAssignedTkts = true;
+    isLimitAssignedTkts = true,
+    isQueues = false;
 
 var formatDate=function(a){if (!a || a.length < 12) return a;  var y=a.substring(0,4),e=a.substring(5,7),r=a.substring(8,10);switch(e){case"01":e="Jan";break;case"02":e="Feb";break;case"03":e="Mar";break;case"04":e="Apr";break;case"05":e="May";break;case"06":e="Jun";break;case"07":e="Jul";break;case"08":e="Aug";break;case"09":e="Sep";break;case"10":e="Oct";break;case"11":e="Nov";break;case"12":e="Dec";break;default:e="nul";}return e+"&nbsp;"+r + (year != y ? ("&nbsp;/&nbsp;" + y) : "");};
 
@@ -932,6 +933,7 @@ $(document).ready(function(){
             setTimeout(function(){
                 getApi("tickets?status=closed&account="+localStorage.getItem("DetailedAccount")).then(function(returnData) {
                     ticketList.createTicketsList(returnData, "#closedTickets", cacheName1);
+                    if (returnData.length)
                     filterList("closedTickets");
                 },
                                                                                                       function(e) {
@@ -1377,7 +1379,7 @@ $(document).ready(function(){
                     if (isNaN(searchItem))
                     {
                         localStorage.setItem("searchItem",searchItem);
-                        localStorage.setItem("ticketPage", "allTickets");
+                        localStorage.setItem("ticketPage", isLimitAssignedTkts ? "asTech" : "allTickets");
                         window.location = "ticket_list.html";
                     }
                     else
@@ -2201,25 +2203,34 @@ $(document).ready(function(){
             this.specifics();        
         },
         specifics:function(){
-            var data = localStorage.invoiceNumber;
+            var number = localStorage.invoiceNumber;
 
-            if (!data){
+            if (!number){
                 backFunction(); 
             }
-            if (data.indexOf(",") != -1)
+            
+            var data = {};
+            var isUnbilled = (number.indexOf(",") != -1);
+            if (isUnbilled)
             {
                 $("#sendInvoiceButton").html("Create Invoice"); 
                 $("#invoiceNumber").html("Create Invoice"); 
-                data = data.split(",");
-                data = "?status=unbilled&account="+data[0]+"&project="+data[1] + "&is_detailed=true";
+                number = number.split(",");
+                data = {"status": "unbilled", "account" : number[0], "project" : number[1]};
+                number = 'invoices';
             }
             else
-                data = "/"+data + "?is_detailed=true";
-
+            {
+                data.action = "sendEmail";
+                number = 'invoices/' +number;
+            }
+            
+            
+            data.is_detailed=true;
 
             var start_date, end_date;
 
-            getApi("invoices"+data).then(function(returnData) {
+            getApi(number, data).then(function(returnData) {
                 ////console.log(returnData);
                 localStorage.setItem("invoiceAccountId",returnData.account_id);
                 localStorage.setItem("invoiceProjectId",returnData.project_id);
@@ -2386,19 +2397,10 @@ $(document).ready(function(){
                 var emails = ""; 
                 $.each($(".recipient").children(".plusIcon"), function(){emails+=$(this).attr("id") + ",";}); 
 
-                var data, number = localStorage.invoiceNumber;
-                var isUnbilled = (number.indexOf(",") != -1);
                 if (isUnbilled)
                 {
-                    number = number.split(",");
-                    data = {"status": "unbilled", "account" : number[0], "project" : number[1], 
-                            "start_date" : start_date, "end_date" : end_date};
-                    number = 'invoices';
-                }
-                else
-                {
-                    data = {"action":"sendEmail"};
-                    number = 'invoices/' +number;
+                    data.start_date = start_date;
+                    data.end_date = end_date;
                 }
 
                 data.recipients = emails;
@@ -2503,7 +2505,8 @@ $(document).ready(function(){
             getApi("queues/"+queueId).then(
                 function(returnData) {
                     //console.log(returnData);
-                    ticketList.createTicketsList(returnData, "#queueTickets");  
+                    ticketList.createTicketsList(returnData, "#queueTickets"); 
+                    if (returnData.length)
                     filterList("queueTickets");
                     reveal();
                     var retrievedObject, test = localStorage.getItem("storageQueues");
@@ -2528,6 +2531,10 @@ $(document).ready(function(){
     //#Queues.html
     var getQueues = {
         init:function(parent, limit) {
+            if (!isQueues){
+                $(parent).parent().remove();
+                return;
+            }
             if (parent) 
             {$(document).on("click","#queue", function(){
                 localStorage.setItem('currentQueue',$(this).attr("data-id"));
@@ -2577,7 +2584,9 @@ $(document).ready(function(){
                         getQueues.createQueuesList(parent, returnData, limit);
                         localStorage.setItem("storageQueues",JSON.stringify(returnData));
                         reveal();
-                        if (!limit) {createSpan(parent);filterList("OptionsList");}
+                        if (!limit) {createSpan(parent);
+                                     if (returnData.length)
+                                         filterList("OptionsList");}
                     }
 
                 },
@@ -2632,7 +2641,7 @@ $(document).ready(function(){
                     $("#tabpage_info").show();
                     localStorage.setItem('ticketPage','asTech');
                 }
-                else if (tab == "all")
+                else if (tab == "all" && !isLimitAssignedTkts)
                 {
                     $("li.tabHeader[data-id=all]").css('color','#ffffff');
                     $("#tabpage_all").show();
@@ -2647,11 +2656,18 @@ $(document).ready(function(){
             else
             {                
                 var searchItem = localStorage.getItem("searchItem");
+                $(".search").val(searchItem);
                 localStorage.setItem("searchItem",'');
                 this.userTickets(searchItem);
                 this.techTickets(searchItem);
                 this.altTickets(searchItem);
-                this.allTickets(searchItem);
+                if (!isLimitAssignedTkts)
+                    this.allTickets(searchItem);
+                else
+                {
+                    $("li.tabHeader[data-id=all]").click(function() { return false; });
+                    $("li.tabHeader[data-id=all]").empty();
+                }
             }
         },
         createTicketsList : function (returnData, parent, cachePrefix){
@@ -2720,6 +2736,7 @@ $(document).ready(function(){
                 getApi("tickets?status=open&limit=100&role=tech").then(function(returnData) {
                     //add tickets as tech to as tech list
                     ticketList.createTicketsList(returnData, "#techContainer", cacheName1);
+                    if (returnData.length)
                     featureList2 = filterList("techContainer");
                 },
                                                                        function(e) {
@@ -2748,6 +2765,7 @@ $(document).ready(function(){
             setTimeout(function(){
                 getApi("tickets?status=allopen&limit=100&query=all").then(function(returnData) {
                     ticketList.createTicketsList(returnData, "#allContainer", cacheName1);
+                    if (returnData.length)
                     featureList3 = filterList("allContainer");
 
                 },
@@ -2778,6 +2796,7 @@ $(document).ready(function(){
             setTimeout(function(){
                 getApi("tickets?status=open&limit=100&role=alt_tech").then(function(returnData){
                     ticketList.createTicketsList(returnData, "#altContainer", cacheName1);
+                    if (returnData.length)
                     featureList4 = filterList("altContainer");
                 },
                                                                            function(e) {
@@ -2807,6 +2826,7 @@ $(document).ready(function(){
             setTimeout(function(){
                 getApi("tickets?status=open,onhold&limit=100&role=user").then(function(returnData) {
                     ticketList.createTicketsList(returnData, "#userContainer", cacheName1);
+                    if (returnData.length)
                     featureList5 = filterList("userContainer");
                 },
                                                                               function(e) {
@@ -2885,7 +2905,8 @@ $(document).ready(function(){
                     }
                 }
                 $table.html(textToInsert.join(''));
-                createSpan(parent); filterList("ActiveAccountsContainer");
+                createSpan(parent); 
+                if (length) filterList("ActiveAccountsContainer");
             }
         },
         //create account list on dashboard.html 
@@ -3065,7 +3086,7 @@ $(document).ready(function(){
                 createSpan("#timelogs");
                 reveal();
                 //localStorage.setItem("storageTimeLogs",LZString.compressToUTF16(JSON.stringify(localTimelogs)));
-                if (returnData.length > 1)
+                if (returnData.length)
                     filterList("timelogs");
             },
                                                  function(e) {
@@ -3195,6 +3216,7 @@ $(document).ready(function(){
             if (retrievedObjectTickets){
                 retrievedObjectTickets = JSON.parse(retrievedObjectTickets);
                 ticketList.createTicketsList(retrievedObjectTickets, ".AccountDetailsTicketsContainer");
+                if (retrievedObjectTickets.length)
                 filterList("AccountDetailsTicketsContainer");
             }
             else
@@ -3234,6 +3256,7 @@ $(document).ready(function(){
                 getApi("tickets?status=open&account="+currentDetailedAccount).then( 
                     function(returnData) {
                         ticketList.createTicketsList(returnData, ".AccountDetailsTicketsContainer",'account'+currentDetailedAccount);
+                        if (returnData.length)
                         filterList("AccountDetailsTicketsContainer");
                     },
                     function(e) {
@@ -3661,8 +3684,12 @@ $(document).ready(function(){
         }
         if (localStorage.getItem('is_travel_costs') === "false")
             isTravelCosts = false;
-        if (localStorage.getItem('is_limit_assigned_tkts') === "false")
+        if (localStorage.getItem('is_limit_assigned_tkts') === "false"){
             isLimitAssignedTkts = false;
+            isQueues = true;
+        }
+        if (!isQueues)
+            $("#itemQueues").hide1();
         if (localStorage.getItem('sd_is_MultipleOrgInst') === "false")
         {
             is_MultipleOrgInst = false;
