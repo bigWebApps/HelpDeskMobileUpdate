@@ -1148,9 +1148,9 @@ $(document).ready(function(){
                     {   
                         var initial = "<option value=0 disabled "+(default_id ? "" : "selected ") + ">choose "+method.toLowerCase().slice(0, -1)+"</option>";
                         if (default_id && !$.grep(results, function(el){
-                                return el.id === default_id
+                                return el.id === default_id;
                             }).length)
-                                initial += "<option value="+default_id+" selected>"+default_name+"</option>"
+                                initial += "<option value="+default_id+" selected>"+default_name+"</option>";
                         fillSelect(results, element, initial, "", "name,firstname,lastname,email");
                         if (default_id)
                         $(""+element).val(default_id).trigger("change");
@@ -1653,8 +1653,8 @@ $(document).ready(function(){
                         if (task_type_id > 0)
                             $("#taskTypes").val(task_type_id).trigger("change");
                     }
-                    if (!$("#timeTicket").length)
-                        reveal();
+                    //if (!$("#timeTicket").length)
+                    //    reveal();
                 },
                 function(e) {
                     showError(e);
@@ -1685,7 +1685,7 @@ $(document).ready(function(){
                             $("#timeProjects").val(project_id).trigger("change");
                             //addTime.getTaskTypes({"account" : account, "project": project_id}, task_type_id);
                             //addTime.chooseTickets(account, project_id, 0);
-                            reveal();
+                            //reveal();
 
                         },
                         function(e) {
@@ -2151,10 +2151,9 @@ $(document).ready(function(){
                         var projects = getApi('projects');
                         projects.done(
                             function(projectResults){
-                                if (fillSelect(projectResults, "#ticketProject", returnData.project_name == "" ? "<option value='null' disabled selected>Project</option>" : "") >0){
-                                    if (returnData.project_name != "") $("#ticketProject").val(returnData.project_id).trigger("change");
+                                fillSelect(projectResults, "#ticketProject", "<option value='null' disabled=disabled>Select project</option>");
+                                $("#ticketProject").val(returnData.project_id).trigger("change");
                                 }
-                            }
                         );
                     }
 
@@ -3496,7 +3495,7 @@ $(document).ready(function(){
                         var orglistitem = results;
                         for (var i = 0; i < orglistitem.length; i++) {
                             var expired = "", expiredclass="";
-                            if (false && orglistitem[i].is_expired){
+                            if (orglistitem[i].is_expired){
                                 expired =  " <font color=black>(Expired)</font>";
                                 expiredclass = "expired";
                             }
