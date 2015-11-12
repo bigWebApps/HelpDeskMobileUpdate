@@ -274,6 +274,10 @@ window.onload = function() {
             localStorage.setItem(cacheName, ""); 
         location.reload(false);}});};
 
+window.onbeforeunload = function(){
+    $("#loading").show1();
+};
+
 //global helper functions
 function GooglelogOut(mess) {
     if (!isExtension && !confirm("Do you want to stay logged in Google account?")) {
