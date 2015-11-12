@@ -65,7 +65,7 @@ function initOrgPreferences(value)
 {
     return;
     if (window.cordova){
-        var prefs = window.cordova.plugins.appPreferences;
+        var prefs = plugins.appPreferences;
     if (prefs){
     var suitePrefs = prefs.iosSuite("group.io.sherpadesk.mobile");
     suitePrefs.store (ok, fail, 'org', value);
