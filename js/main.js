@@ -1,16 +1,21 @@
-/*jshint -W004, -W041, -W103, eqeqeq: false, noempty: false, undef: false, latedef: false, eqnull: true, multistr: true*/
-/*global jQuery, $ */
+/*jshint -W004, -W041, -W103, eqeqeq: false, undef: true, latedef: true, eqnull: true, multistr: true*/
+/*global jQuery, $, location, window, localStorage, navigator, document, cordova, setTimeout, console, alert, confirm, btoa, Image, history, setInterval, year, MobileSite, ApiSite, logout, backFunction, cleanQuerystring, getParameterByName, googleTag, appVersion, isSD, clearStorage, WebPullToRefresh, googleConversion, AppSite, List, initOrgPreferences, default_redirect */
+
+var Page = location.href.split('/').pop().split('?').shift();
 
 var isExtension = window.self !== window.top;
 if (isExtension) localStorage.setItem("referrer", Page);
-
-var Page = location.href.split('/').pop().split('?').shift();
 
 var adMessage = "Perfomance update";
 
 function updatedFunction ()
 {
     location.reload(true);
+}
+
+function getDateTimeFormat()
+{ 
+    return (localStorage.dateformat !== "1" ? "m/d/Y" : "d/m/Y") + (localStorage.timeformat !== "1" ? " h:i A" : " H:i");
 }
 
 function getDateTime(date)
@@ -36,12 +41,6 @@ function getFullName(firstname,lastname,email,name) {
     return fname || "NoName";
 }
 
-function getDateTimeFormat()
-{ 
-    return (localStorage.dateformat !== "1" ? "m/d/Y" : "d/m/Y") + (localStorage.timeformat !== "1" ? " h:i A" : " H:i");
-}
-
-
 var updateStatusBar = navigator.userAgent.match(/iphone|ipad|ipod/i) &&
     parseInt(navigator.appVersion.match(/OS (\d)/)[1], 10) >= 7;
 
@@ -59,7 +58,7 @@ var isTech = false,
     isInvoice = true,
     is_MultipleOrgInst = true,
     isLimitAssignedTkts = true,
-    isQueues = false;
+    isQueues = true;
 
 var formatDate=function(a){if (!a || a.length < 12) return a;  var y=a.substring(0,4),e=a.substring(5,7),r=a.substring(8,10);switch(e){case"01":e="Jan";break;case"02":e="Feb";break;case"03":e="Mar";break;case"04":e="Apr";break;case"05":e="May";break;case"06":e="Jun";break;case"07":e="Jul";break;case"08":e="Aug";break;case"09":e="Sep";break;case"10":e="Oct";break;case"11":e="Nov";break;case"12":e="Dec";break;default:e="nul";}return e+"&nbsp;"+r + (year != y ? ("&nbsp;/&nbsp;" + y) : "");};
 
@@ -108,6 +107,76 @@ if (typeof String.prototype.addUrlParam !== 'function') {
 var isPhonegap = localStorage.isPhonegap === "true";
 var isOnline = true;
 
+
+//If User is Offline....................................
+function errorLine(message){
+    var func = "location.reload(false)";
+    $("#scroller").hide();
+    if (!$(".catch-error").length) {
+        $('body').prepend('<div class="catch-error"><div class="catch-error-description"><h2>&nbsp;</h2><h2>&nbsp;</h2><h2>Something went wrong...</h2><div id="ctl00_PageBody_StackTrace" class="return-button"><p /><p /><h4>'+message+'</h4><h4>&nbsp;<p>P.S.  Uh... a Yeti just attacked your  camp!</h4><center><button class=loginButton loginGoogle style="width: 200px;" onclick="'+func+'">Refresh</button></center></div></div>');
+    }
+}
+
+function offLine(){
+    var func = "redirectToPage()";
+    isOnline = false;
+    if (!$(".catch-error").length) {
+        $('body').prepend('<div class="catch-error"><div class="catch-error-description"><h2>&nbsp;</h2><h2>&nbsp;</h2><h2>Check your internet connection!</h2><div id="ctl00_PageBody_StackTrace" class="return-button"><p /><p /><h4>P.S.  Uh... a Yeti just attacked your  camp!</h4><center><button class=loginButton loginGoogle style="width: 200px;" onclick="'+func+'">Refresh</button></center></div></div>');
+    }
+}
+
+function onLine (){
+    if (!isOnline){
+        $(".catch-error").remove();
+        location.reload(false);
+        //document.location.href = MobileSite + "login.html";
+    }
+    isOnline = true;
+}
+
+function redirectToPage() {
+    if (navigator.onLine)
+    {  if (isPhonegap) onLine();
+     else
+     {
+         var img = document.body.appendChild(document.createElement("img"));
+         img.style.display = 'none';
+         img.onload = function () {
+             onLine();
+         };
+         img.onerror = function () {
+             offLine();
+         };
+         img.src = MobileSite + "img/select_arrow.png?rand=" + Math.random();
+     }
+    }
+    else
+    {
+        offLine();
+    }
+}
+
+function onDeviceReady() {
+    //alert("gap init");
+    localStorage.isPhonegap = "true";
+    isPhonegap = true;
+    if (updateStatusBar) {
+        var t=document.getElementsByTagName("header")[0];
+        if (t){
+            t.style.paddingTop = "13px";
+            t.style.height = "63px";
+            $('body').css('margin-top', function (index, curValue) {
+                return parseInt(curValue, 10) + 18 + 'px';
+            });
+        }
+        t = document.getElementById("ptr");
+        if (t){t.style.marginTop = "18px";}
+        if (Page == "dashboard.html") $("#techStat").css("padding-top", "18px");
+    }
+    if (Page == "login.html" || (Page=="ticket_list.html" && !isTech) || Page=="dashboard.html")
+        googleConversion();
+}
+
 document.addEventListener("deviceready", onDeviceReady, false);
 document.addEventListener("offline", offLine,false);
 document.addEventListener("online", onLine ,false);
@@ -132,27 +201,6 @@ function isStorage() {
         errorLine("Please enable Cookies to work with site!");
         return false;
     }
-}
-
-function onDeviceReady() {
-    //alert("gap init");
-    localStorage.isPhonegap = "true";
-    isPhonegap = true;
-    if (updateStatusBar) {
-        var t=document.getElementsByTagName("header")[0];
-        if (t){
-            t.style.paddingTop = "13px";
-            t.style.height = "63px";
-            $('body').css('margin-top', function (index, curValue) {
-                return parseInt(curValue, 10) + 18 + 'px';
-            });
-        }
-        t = document.getElementById("ptr");
-        if (t){t.style.marginTop = "18px";}
-        if (Page == "dashboard.html") $("#techStat").css("padding-top", "18px");
-    }
-    if (Page == "login.html" || (Page=="ticket_list.html" && !isTech) || Page=="dashboard.html")
-        googleConversion();
 }
 
 //open link	in blank
@@ -192,24 +240,6 @@ function reveal() {
     $("#loading").hide1();
 }
 
-
-//If User is Offline....................................
-function errorLine(message){
-    var func = "location.reload(false)";
-    $("#scroller").hide();
-    if (!$(".catch-error").length) {
-        $('body').prepend('<div class="catch-error"><div class="catch-error-description"><h2>&nbsp;</h2><h2>&nbsp;</h2><h2>Something went wrong...</h2><div id="ctl00_PageBody_StackTrace" class="return-button"><p /><p /><h4>'+message+'</h4><h4>&nbsp;<p>P.S.  Uh... a Yeti just attacked your  camp!</h4><center><button class=loginButton loginGoogle style="width: 200px;" onclick="'+func+'">Refresh</button></center></div></div>');
-    }
-}
-
-function offLine(){
-    var func = "redirectToPage()";
-    isOnline = false;
-    if (!$(".catch-error").length) {
-        $('body').prepend('<div class="catch-error"><div class="catch-error-description"><h2>&nbsp;</h2><h2>&nbsp;</h2><h2>Check your internet connection!</h2><div id="ctl00_PageBody_StackTrace" class="return-button"><p /><p /><h4>P.S.  Uh... a Yeti just attacked your  camp!</h4><center><button class=loginButton loginGoogle style="width: 200px;" onclick="'+func+'">Refresh</button></center></div></div>');
-    }
-}
-
 window.onerror = function(msg, url, line, col, error) {
     // Note that col & error are new to the HTML 5 spec and may not be 
     // supported in every browser.  It worked for me in Chrome.
@@ -230,37 +260,6 @@ window.onerror = function(msg, url, line, col, error) {
     // Internet Explorer) will be suppressed.
     return suppressErrorAlert;
 };
-
-function onLine (){
-    if (!isOnline){
-        $(".catch-error").remove();
-        location.reload(false);
-        //document.location.href = MobileSite + "login.html";
-    }
-    isOnline = true;
-}
-
-function redirectToPage() {
-    if (navigator.onLine)
-    {  if (isPhonegap) onLine();
-     else
-     {
-         var img = document.body.appendChild(document.createElement("img"));
-         img.style.display = 'none';
-         img.onload = function () {
-             onLine();
-         };
-         img.onerror = function () {
-             offLine();
-         };
-         img.src = MobileSite + "img/select_arrow.png?rand=" + Math.random();
-     }
-    }
-    else
-    {
-        offLine();
-    }
-}
 
 //pull to refresh
 window.onload = function() { 
@@ -1554,7 +1553,7 @@ $(document).ready(function(){
                     userMessage.showMessage(false, "Please enter Firstname");
                     return;
                 }
-                Lastname = $("#addTicketLastname").val().trim();
+                var Lastname = $("#addTicketLastname").val().trim();
                 if (Lastname.length < 1)
                 {
                     userMessage.showMessage(false, "Please enter Lastname");
@@ -2462,7 +2461,6 @@ $(document).ready(function(){
                     {
                         var customer = returnData[i].customer  || returnData[i].account_name; //createElipse(returnData[i].customer, 0.33, 12); // account name
                         var date = formatDate(returnData[i].end_date || returnData[i].date || new Date().toJSON());
-                        id = returnData[i].account_id +","+returnData[i].project_id;// +","+(returnData[i].start_date || new Date().toJSON()).slice(0, 10) +","+ (returnData[i].end_date || new Date().toJSON()).slice(0, 10);
                         var id = is_unbilled ? 
                             returnData[i].account_id +","+returnData[i].project_id : returnData[i].id;
                         insert += "<ul data-id="+id+" class='invoiceRows detailInvoice item'><li class='responseText'>"+date+"</li><li class='user_name dots'>"+customer+"</li><li>$"+ Number(returnData[i].total_cost).toFixed(2)+"</li></ul>";
@@ -2491,7 +2489,7 @@ $(document).ready(function(){
             $("#ticketCreate").click(
                 function(){
                     localStorage.setItem('add_user_techid',localStorage.getItem("currentQueue"));
-                    localStorage.setItem('add_user_accountid',account);
+                    //localStorage.setItem('add_user_accountid',account);
                     window.location.replace("add_tickets.html");
                 });
         },
@@ -2511,7 +2509,7 @@ $(document).ready(function(){
                     reveal();
                     var retrievedObject, test = localStorage.getItem("storageQueues");
                     if (test){
-                        match = new RegExp('\"' + queueId+',(\\d+)').exec(test);
+                        var match = new RegExp('\"' + queueId+',(\\d+)').exec(test);
                         if (match) {
                             test = JSON.parse(test);
                             test[Number(match[1])].tickets_count = returnData.length;
@@ -2992,7 +2990,7 @@ $(document).ready(function(){
                             ticketNumber = "Account: " + returnData[i].account_name;
                         }
 
-                        log = '<li class="expenLi"><ul class="responseBlock item responseBlockExpen"> <li class="expen"><img class="TicketBlockFace expenImg" src="http://www.gravatar.com/avatar/'+email+'d=mm&amp;s=80"><span class="user_name">'+nameCheck+'</span></li><li class="textExpen"><h4><p class="subjectExpen dots">'+ticketNumber+'</p></h4><div class="initailPost">'+text+'</div></li><li class="TicketBlockNumber expenE"><h3 class="feedTimeExpen"><span>$'+amount+'</span></h3><span>'+expenDate+'</span></li></ul></li>';
+                        var log = '<li class="expenLi"><ul class="responseBlock item responseBlockExpen"> <li class="expen"><img class="TicketBlockFace expenImg" src="http://www.gravatar.com/avatar/'+email+'d=mm&amp;s=80"><span class="user_name">'+nameCheck+'</span></li><li class="textExpen"><h4><p class="subjectExpen dots">'+ticketNumber+'</p></h4><div class="initailPost">'+text+'</div></li><li class="TicketBlockNumber expenE"><h3 class="feedTimeExpen"><span>$'+amount+'</span></h3><span>'+expenDate+'</span></li></ul></li>';
 
                         $(log).appendTo(".accountContainerExpen");
                         if (i==9)
@@ -3143,7 +3141,7 @@ $(document).ready(function(){
                     }
                 }
 
-                newTicket.getSearch("#addTicketUser", "users", "?account="+accountset, userid, userName);
+                //newTicket.getSearch("#addTicketUser", "users", "?account="+accountset, userid, userName);
 
                 createSpan("#todoList");
                 reveal();
@@ -3686,7 +3684,6 @@ $(document).ready(function(){
             isTravelCosts = false;
         if (localStorage.getItem('is_limit_assigned_tkts') === "false"){
             isLimitAssignedTkts = false;
-            isQueues = true;
         }
         if (!isQueues)
             $("#itemQueues").hide1();
@@ -3810,7 +3807,7 @@ $(document).ready(function(){
         if (!test || test === location.href)
             localStorage.setItem(currPage, document.referrer || localStorage.referrer || "login.html");
 
-        backFunction = function(){
+        window.backFunction = function(){
             var reff = localStorage.getItem(currPage);
             if (!reff)
             {
@@ -3927,12 +3924,12 @@ $(document).ready(function(){
             return;
         }
 
-        if (Page=="addTicket_V4.html")
+        /*if (Page=="addTicket_V4.html")
         {
             newTicket4.init();
             //accountTimeLogs.init();
             return;
-        }
+        }*/
 
         default_redirect(isTech);
     }
