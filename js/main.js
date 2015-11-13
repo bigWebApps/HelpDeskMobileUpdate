@@ -2018,7 +2018,7 @@ $(document).ready(function(){
             $.each($field, function(i,item) {
                 var caption = $(this).find('caption'),
                     value = $(this).find('value');				
-                infoFields.append("<p><u>" + caption[0].textContent +":</u>&nbsp;&nbsp;&nbsp;<strong>" + value[0].textContent + "</strong></p>&nbsp;<br/>");
+                infoFields.append("<span class='question'>" + caption[0].textContent +":</span>&nbsp;&nbsp;&nbsp;<span class='replyTicket'>" + value[0].textContent + "</span></span>&nbsp;<br/>");
             });
         },
         showTicket:function(showTicketMessage){
