@@ -704,6 +704,15 @@ $(document).ready(function(){
         });
     }
 
+    /***
+    list of available parameters:
+    t - use this token, i.e. "hgkdsghf4kjsdhjks444jhjhjjk"
+    e - use this email, i.e. "eugene@micajah.com"
+    f - use this error message, i.e. "incorrect id"
+    tab - values: "all" (goto allopen tickets), "my" (goto tech tickets)
+    org - use this org key, i.e. "gdhsj"
+    ticket - goto ticket, i.e. "2345" or "eghjw"
+    */
     // user login
     //#login.html
     var UserLogin = {
