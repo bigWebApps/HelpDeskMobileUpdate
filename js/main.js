@@ -2011,6 +2011,8 @@ $(document).ready(function(){
             });
         },
         getCustomFields : function (fieldsXml){
+            if (!fieldsXml || fieldsXml.length < 9 )
+                return;
             var xmlDoc = $.parseXML(fieldsXml),
                 $xml = $( xmlDoc ),
                 $field = $xml.find( "field" ),
@@ -2018,7 +2020,7 @@ $(document).ready(function(){
             $.each($field, function(i,item) {
                 var caption = $(this).find('caption'),
                     value = $(this).find('value');				
-                infoFields.append("<span class='question'>" + caption[0].textContent +":</span>&nbsp;&nbsp;&nbsp;<span class='replyTicket'>" + value[0].textContent + "</span></span>&nbsp;<br/>");
+                infoFields.append("<div class=styledSelect><span class='question'>" + caption[0].textContent +":</span>&nbsp;&nbsp;&nbsp;<span class='replyTicket'>" + value[0].textContent + "</span></span></div>");
             });
         },
         showTicket:function(showTicketMessage){
@@ -3656,7 +3658,9 @@ $(document).ready(function(){
         }
     };
 
-    function routing(){
+    function routing(page){
+        if (page)
+            Page = page;
         if (localStorage.getItem('userRole') === "tech")
             isTech = true;
         else
@@ -3958,10 +3962,7 @@ $(document).ready(function(){
         //always active api calls
         userMessage.init();
 
-        if (window.dontClearCache && localStorage.techtickets && Page !== "login.html" && Page !== "org.html") {
-            routing();
-            return;
-        }
+        //if (window.dontClearCache && localStorage.techtickets && Page !== "login.html" && Page !== "org.html") {routing(); return;}
 
         //refresh version
         if (!localStorage.appVersion)
