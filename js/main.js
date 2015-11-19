@@ -1964,10 +1964,7 @@ $(document).ready(function(){
                          $("#closeu").show(); }
             else { $("#closeu").hide();
                   $("#transfer").click(function(){
-                      $('.TicketTabs > ul > li, .tabs > ul > li').css('color','rgba(255, 255, 255, 0.55)');
-                      $(".tabpage").hide();
-                      $("li.tabHeader[data-id=info]").css('color','#ffffff');
-                      $("#tabpage_info").show();
+                      displayPage(document.querySelector(".tabs").parentElement, "info");
                       $("html, body").animate({ scrollTop: $(document).height() }, 1000);
                       $("#ticketTechs").parent().addClass("selected");
                       $(".updateButton").html("Transfer");
@@ -2451,13 +2448,13 @@ $(document).ready(function(){
                         window.location.replace("unInvoice_List.html");
                     });
             this.listInvoices(accountid, is_unbilled);
-        },
-
-        listInvoices:function(accountid, is_unbilled){
             $(document).on("click",".invoiceRows", function(){
                 localStorage.setItem('invoiceNumber',$(this).attr("data-id"));
                 window.location = "invoice.html";
             });
+        },
+
+        listInvoices:function(accountid, is_unbilled){
             var localInvoiceList = [];
             // get list of invoices for a specific account
             getApi("invoices", {"status": is_unbilled, "account" : accountid}).then(
@@ -2647,24 +2644,19 @@ $(document).ready(function(){
             var tab = getParameterByName('tab');
             if (tab){
                 cleanQuerystring();
-                $('.TicketTabs > ul > li, .tabs > ul > li').css('color','rgba(255, 255, 255, 0.55)');
                 if(tab == "my")
                 {
-                    $("li.tabHeader[data-id=tech]").css('color','#ffffff');
-                    $("#tabpage_info").show();
-                    localStorage.setItem('ticketPage','asTech');
+                    displayPage(document.querySelector(".TicketTabs").parentElement, "tech");
                 }
                 else if (tab == "all" && !isLimitAssignedTkts)
                 {
-                    $("li.tabHeader[data-id=all]").css('color','#ffffff');
-                    $("#tabpage_all").show();
-                    localStorage.setItem('ticketPage','allTickets');
+                    displayPage(document.querySelector(".TicketTabs").parentElement, "all");
                 }
             }
             if (!isTech){
                 this.userTickets(); 
                 $('#userContainer').css('padding-top', '20px');
-                $('#tabpage_reply').fadeIn();
+                $(".TicketTabs").hide()
             }
             else
             {                
@@ -2678,16 +2670,12 @@ $(document).ready(function(){
                     this.allTickets(searchItem);
                 else
                 {
-                    $("li.tabHeader[data-id=all]").click(function() { return false; });
-                    $("li.tabHeader[data-id=all]").empty();
+                    $("#tab_all").click(function() { return false; });
+                    $("#tab_all").empty();
                 }
             }
         },
         createTicketsList : function (returnData, parent, cachePrefix){
-            $(document).on("click",".responseBlock", function(){
-                localStorage.setItem('ticketNumber', $(this).attr("data-id")); //set local storage variable to the ticket id of the ticket block from the ticket list
-                window.location = "ticket_detail.html"; // change page location from ticket list to ticket detail list
-            });
             var $table = $(parent);
             $table.empty();
             if(!returnData || returnData.length < 1){
@@ -2946,12 +2934,7 @@ $(document).ready(function(){
             $table.html(textToInsert.join(''));
         }
     };
-
-    $(document).on("click",".timelog", function(){
-        localStorage.setItem('timeNumber', $(this).attr("data-info")); //set local storage variable to the ticket id of the ticket block from the ticket list
-        window.location = "edit_time.html"; // change page location from ticket list to ticket detail list
-    });
-
+    
     //expenses
     //#expen.html
     var expenses = {
@@ -3659,6 +3642,9 @@ $(document).ready(function(){
     };
 
     function routing(page){
+        console.log(page);
+        console.log(1);
+        
         if (page)
             Page = page;
         if (localStorage.getItem('userRole') === "tech")
@@ -3720,9 +3706,16 @@ $(document).ready(function(){
         signout.init();
         //if (typeof navigator.splashscreen !== 'undefined') 
         //    navigator.splashscreen.hide();
+        
+        $(document).on("click",".responseBlock", function(){
+            localStorage.setItem('ticketNumber', $(this).attr("data-id")); //set local storage variable to the ticket id of the ticket block from the ticket list
+            routing("ticket_detail.html"); // change page location from ticket list to ticket detail list
+        });
 
         if (Page=="ticket_list.html")
         {
+            $(".ticket_detail").hide();
+            $(".ticket_list").show();
             localStorage.DetailedAccount = localStorage.addAccountTicket = '';
             ticketList.init();
             //accountDetailsPageSetup.init();
@@ -3731,6 +3724,12 @@ $(document).ready(function(){
         }
         if (Page=="ticket_detail.html")
         {
+            window.backFunction = function(){
+                console.log("back");
+                routing("ticket_list.html");
+            };
+            $(".ticket_detail").show();
+            $(".ticket_list").hide();
             detailedTicket.init();
             pickUpTicket.init();
             closeTicket.init();
@@ -3763,16 +3762,6 @@ $(document).ready(function(){
                 {
                     localStorage.DetailedAccount = localStorage.addAccountTicket = '';
                     accountList.init("#fullList");
-                    return;
-                }
-            }
-            if (Page=="timelog.html")
-            {
-                if (isTime)
-                {
-                    //accountTimeLogs.init();
-                    timeLogs.init();
-                    //addTime.init();
                     return;
                 }
             }
@@ -3816,6 +3805,22 @@ $(document).ready(function(){
                     return;
                 }
 
+            }
+            
+            $(document).on("click",".timelog", function(){
+                localStorage.setItem('timeNumber', $(this).attr("data-info")); //set local storage variable to the ticket id of the ticket block from the ticket list
+                window.location = "edit_time.html"; // change page location from ticket list to ticket detail list
+            });
+
+            if (Page=="timelog.html")
+            {
+                if (isTime)
+                {
+                    //accountTimeLogs.init();
+                    timeLogs.init();
+                    //addTime.init();
+                    return;
+                }
             }
         }
         //set page

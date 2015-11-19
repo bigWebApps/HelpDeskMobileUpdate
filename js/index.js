@@ -278,14 +278,7 @@ var fastClicker = {
 	var ticketDetails = {
 		init: function() {
 			this.tab();
-			//this.scrollResponse();
-			this.latestPost();
 		},
-
-		latestPost: function() {
-			$(".orginalMessageContainer .responseBlock").addClass("latestResponse");
-		},
-
 		tab: function() {
 			$('#replyTab, #ticketReply').css('color','#fff');   
             if (localStorage.getItem('userRole') !== "tech") $(".TicketTabs").hide();
@@ -437,9 +430,6 @@ var fastClicker = {
         
         if($("#addTimeTicket").length)
 		ticker.init();
-        
-        if ($(".tabHeader").length)
-		ticketDetails.init();
 		
 		//StickRecentTickets.init();
 		billEm.init();
