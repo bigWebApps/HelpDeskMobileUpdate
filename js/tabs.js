@@ -11,7 +11,7 @@ function Tabs() {
 
 function initContainer(container)
 {
-    displayPage(container);
+    //displayPage(container);
 
     //this adds click event to tabs
     var func = function(event) { var tab = event.target.id;
@@ -27,6 +27,8 @@ function displayPage(container, tab) {
         return;
     tab = tab || container.querySelector(".tabHeader").id.split("_")[1];
     var el = container.querySelector("#tab_" + tab);
+    if (!el)
+        return;
     var pa = el.parentNode;
   var current = pa.getAttribute("data-current");
   //remove class of activetabheader and hide old contents
