@@ -11,7 +11,7 @@ function Tabs() {
 
 function initContainer(container)
 {
-    //displayPage(container);
+    displayPage(container);
 
     //this adds click event to tabs
     var func = function(event) { var tab = event.target.id;
