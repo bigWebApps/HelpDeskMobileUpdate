@@ -889,7 +889,7 @@ $(document).ready(function(){
             var password = $("#password").val();
             var password_confirm = $("#password_confirm").val();
             var how = $("#how").val();
-            if (name === '' || email === '') {
+            if (name === '' || email === '' || firstname === '' || lastname === '') {
                 userMessage.showMessage(false, "Please enter name and email!");
                 return;
             }
@@ -2399,7 +2399,7 @@ $(document).ready(function(){
             getApi("tickets/"+key).then(
                 function(returnData) {
                     // calculate the number of days since the ticket was created
-                    var daysOld = returnData.daysold_in_minutes / -60;
+                    var daysOld = returnData.days_old_in_minutes / 60;
 
                     // check to see if the ticket is less than a day old
                     if(daysOld > 24){
