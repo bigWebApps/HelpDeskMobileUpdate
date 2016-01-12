@@ -2160,7 +2160,7 @@ $(document).ready(function(){
                     $("html, body").animate({ scrollTop: $(document).height() }, 1000);
                     $("#ticketTechs").parent().addClass("selected");
                     $(".updateButton").html("Transfer");
-                    userMessage.showMessage(true, "Warning! Please update Tech in Info section!", function()
+                    userMessage.showMessage(true, "FYI. Please update Tech in Info section", function()
                                             {
                         $("#ticketTechs").parent().removeClass("selected");
                     $(".updateButton").html("Update");
