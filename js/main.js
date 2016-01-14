@@ -4003,7 +4003,7 @@ $(document).ready(function(){
         default_redirect(isTech);
     }
     
-    var clickOnticket = once(function(){$(document).on("click touchend",".responseBlock", function(){
+    var clickOnticket = once(function(){$(".responseBlock").click(function(){
                 localStorage.setItem('ticketNumber', $(this).attr("data-id")); //set local storage variable to the ticket id of the ticket block from the ticket list
          if(Page.indexOf("ticket_") >=0)
             routing("ticket_list.html"); // change page location from ticket list to ticket detail list
