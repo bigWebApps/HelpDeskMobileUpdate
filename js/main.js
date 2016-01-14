@@ -2147,32 +2147,22 @@ $(document).ready(function(){
                          $("#closeu").show(); }
             else { 
                 $("#closeu").hide();
-                $("#classOptions").empty();
-                $("#ticketPriority").empty();
-                $("#ticketProject").empty();
-                $("#ticketLevel").empty();
-                $("#ticketTechs").empty();
-                $("#ticket_Location").empty();
-                var transfer = function(){
-                    transfer = noop;
-                    $("#transfer").click(function(){
-                    displayPage(document.querySelector(".tabs").parentElement, "info");
-                    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-                    $("#ticketTechs").parent().addClass("selected");
-                    $(".updateButton").html("Transfer");
-                    userMessage.showMessage(true, "FYI. Please update Tech in Info section", function()
-                                            {
-                        $("#ticketTechs").parent().removeClass("selected");
-                    $(".updateButton").html("Update");
-                    });                           
-                });};
-
-               transfer();
+                $("#ticketTechs").parent().removeClass("selected");
+                $(".updateButton").html("Update");
+                this.transfer();
+                this.updateTicket();
             }
             displayPage(document.querySelector(".tabs").parentElement);
             this.showTicket();
-            this.updateTicket();
         },
+        transfer: function(){
+            detailedTicket.transfer = noop;
+        $("#transfer").click(function(){
+        displayPage(document.querySelector(".tabs").parentElement, "info");
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+    $("#ticketTechs").parent().addClass("selected");
+    $(".updateButton").html("Transfer");                          
+        });},
         updateTicket: function(){
             detailedTicket.updateTicket = noop;
             $(".updateButton").click(function(){
@@ -2302,6 +2292,12 @@ $(document).ready(function(){
 
             if (!is_fetched)
             {
+                $("#classOptions").empty();
+                $("#ticketPriority").empty();
+                $("#ticketProject").empty();
+                $("#ticketLevel").empty();
+                $("#ticketTechs").empty();
+                $("#ticket_Location").empty();
                 /*$("#ticketPriority").val(returnData.priority_id).trigger("change");
                 $("#classOptions").val(returnData.class_id).trigger("change");
                 $("#ticket_Location").val(returnData.location_id).trigger("change");
@@ -2402,7 +2398,9 @@ $(document).ready(function(){
                     var daysOld = returnData.days_old_in_minutes / 60;
 
                     // check to see if the ticket is less than a day old
-                    if(daysOld > 24){
+                    if (!returnData.days_old_in_minutes || returnData.days_old_in_minutes < 15)
+                        daysOld = "a moment ago"; 
+                    else if(daysOld > 24){
                         daysOld = parseInt(daysOld/24) +" days ago";
                     } else {
                         daysOld = parseInt(daysOld) +" hours ago";
@@ -2435,7 +2433,7 @@ $(document).ready(function(){
                         $("#comments").append('<p id="fill" style="height:200px">&nbsp;</p>');
                     }
 
-                    detailedTicket.prepareTicket(returnData, !!retrievedObject);
+                    detailedTicket.prepareTicket(returnData, false);
 
                     reveal();
                     //localStorage.setItem('ticketNumber', "");
