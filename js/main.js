@@ -1985,6 +1985,7 @@ $(document).ready(function(){
                     console.log("fail @ "+ container);
                 }
                                                                       );}, time); 
+            clickOnticket2();
         }
     };
 
@@ -3751,8 +3752,6 @@ $(document).ready(function(){
         signout.init();
         //if (typeof navigator.splashscreen !== 'undefined') 
         //    navigator.splashscreen.hide();
-        
-         clickOnticket();
 
         if (localStorage.ticketNumber && Page=="ticket_list.html")
             Page="ticket_detail.html";
@@ -3783,6 +3782,8 @@ $(document).ready(function(){
             postComment.init();
             return;
         }
+        
+        clickOnticket();
 
         //Only for tech
         if (isTech)
@@ -4003,13 +4004,21 @@ $(document).ready(function(){
         default_redirect(isTech);
     }
     
-    var clickOnticket = once(function(){$(".responseBlock").click(function(){
+    var clickOnticket = once(function(){$(document).on("click",".responseBlock", function(){
                 localStorage.setItem('ticketNumber', $(this).attr("data-id")); //set local storage variable to the ticket id of the ticket block from the ticket list
          if(Page.indexOf("ticket_") >=0)
             routing("ticket_list.html"); // change page location from ticket list to ticket detail list
          else
              document.location = "ticket_detail.html";
                                       });});
+    
+    var clickOnticket2 = once(function(){$(".responseBlock").click(function(){
+        localStorage.setItem('ticketNumber', $(this).attr("data-id")); //set local storage variable to the ticket id of the ticket block from the ticket list
+        if(Page.indexOf("ticket_") >=0)
+            routing("ticket_list.html"); // change page location from ticket list to ticket detail list
+        else
+            document.location = "ticket_detail.html";
+    });});
 
     //Main Method that calls all the functions for the app
     (function () {
